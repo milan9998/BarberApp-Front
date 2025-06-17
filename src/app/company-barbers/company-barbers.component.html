@@ -1,0 +1,49 @@
+<div class="container-fluid mt-5">
+  <h2>Frizeri u kompaniji</h2>
+  <a class="btn btn-info mt-3" href="#" [routerLink]="['/create-barber', companyId]">
+    Dodaj frizera
+  </a>
+  <ul>
+    <li *ngFor="let barber of barbers">
+      <strong>Frizer:</strong>
+      <a (click)="onBarberClick(barber.barberId)">
+        {{ barber.barberName }}
+      </a>
+      <br />
+      <strong>Kompanija:</strong> {{ barber.companyName }}
+    </li>
+  </ul>
+
+  <div *ngIf="selectedBarberId" class="mt-3">
+    <h5>Slobodni termini za {{ selectedDate }}</h5>
+
+    <input type="date" [min]="today" [(ngModel)]="selectedDate" (change)="onDateChange()"
+      class="form-control w-25 mb-3" />
+
+
+    <div *ngIf="freeAppointments.length > 0; else noAppointments">
+      <ul>
+        <li *ngFor="let appointment of freeAppointments">
+          <button (click)="onDatePick(appointment.dateAndTime)">Termin: {{ appointment.dateAndTime }} </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="pb-5" >
+      <form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
+      <input type="text" name="firstName" placeholder="First Name" [(ngModel)]="firstName">
+      <input type="text" name="lastName" placeholder="Last Name"[(ngModel)]="lastName">
+      <input type="text" name="email" placeholder=" Email Address"[(ngModel)]="email">
+      <input type="text" name="phoneNumber" placeholder="Phone Number"[(ngModel)]="phoneNumber">
+      <input type="text" name="haircut" placeholder="Your haircut"[(ngModel)]="haircut">
+        <button type="submit" >Zakazi!</button>
+    </form>
+    </div>
+
+
+
+    <ng-template #noAppointments>
+      <p>Nema slobodnih termina za izabrani datum.</p>
+    </ng-template>
+  </div>
+</div>
