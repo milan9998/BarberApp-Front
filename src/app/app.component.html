@@ -1,0 +1,20 @@
+<header class="navbar">
+  <nav class="nav-links">
+    <a class="nav-button" routerLink="/home">Home</a>
+    <a class="nav-button" routerLink="/companies">Companies</a>
+    <a class="nav-button" routerLink="/about">About</a>
+    <a class="nav-button" routerLink="/contact">Contact</a>
+
+    <a *ngIf="isLoggedIn" class="nav-button" (click)="logout()">Logout</a>
+
+    <div *ngIf="!isLoggedIn" class="auth-buttons">
+      <a class="nav-button" routerLink="/login">Login</a>
+      <a class="nav-button" routerLink="/register">Register</a>
+    </div>
+  </nav>
+</header>
+
+
+<div class="divklasa">
+  <router-outlet></router-outlet>
+</div>
