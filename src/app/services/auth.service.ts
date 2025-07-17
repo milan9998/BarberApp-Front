@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, tap } from "rxjs";
 export class AuthService {
     private authUrl = 'http://localhost:5045/auth';
     private roleKey = 'user_role';
+    private owner_company_id = 'owner_company_id';
     private loggedIn = new BehaviorSubject<boolean>(this.checkStorage())
     isLoggedin$ =this.loggedIn.asObservable()
 
@@ -39,9 +40,13 @@ export class AuthService {
         return this.http.get<any>(`${this.authUrl}/checkIfCompanyOwnerExists?CompanyId=${id}`)
     }
 
+    getOwners(): Observable<any[]>{
+        return this.http.get<any[]>(`${this.authUrl}/get-owners`)
+    }
 
     logout(): void {
-        localStorage.removeItem(this.roleKey);
+        //localStorage.removeItem(this.roleKey);
+        localStorage.clear();
         this.loggedIn.next(false)
     }
 
@@ -55,6 +60,13 @@ export class AuthService {
 
     isOwner(): boolean{
         return this.getRole() === 'CompanyOwner';
+    }
+
+    setOwnerCompanyId(role: any) {
+        localStorage.setItem(this.owner_company_id, role);
+    }
+    getOwnerCompanyId(): string | null {
+       return localStorage.getItem(this.owner_company_id);
     }
 
     isLoggedIn(): boolean {

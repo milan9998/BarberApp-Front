@@ -18,7 +18,7 @@ export class CreateBarberComponent {
   constructor(private barberService: BarberService, private authService: AuthService, private route: ActivatedRoute) { }
 
 
-  
+
 
   onSubmit(form: NgForm) {
     this.companyId = this.route.snapshot.paramMap.get('companyId');
@@ -33,7 +33,8 @@ export class CreateBarberComponent {
           phoneNumber: form.value.phoneNumber,
           email: form.value.email,
           individualStartTime: form.value.individualStartTime,
-          individualEndTime: form.value.individualEndTime
+          individualEndTime: form.value.individualEndTime,
+          password: form.value.password
         }
       }
 

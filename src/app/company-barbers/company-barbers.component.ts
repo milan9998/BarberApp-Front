@@ -27,6 +27,8 @@ export class CompanyBarbersComponent implements OnInit {
   datepicker: Date = new Date();
   company: any;
   selectedHaircut: string = '';
+  selectedOwner: string = '';
+  owners: any[] = [];
 
   //(YYYY-MM-DD)
   freeAppointments: any[] = [];
@@ -52,6 +54,8 @@ export class CompanyBarbersComponent implements OnInit {
         console.warn('ID nije pronađen u URL-u roditelj komponente.');
       }
     });
+
+
 
     this.companyId = this.route.snapshot.paramMap.get('id');
 
@@ -84,6 +88,16 @@ export class CompanyBarbersComponent implements OnInit {
 
     this.today = now.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
 
+
+    this.authService.getOwners().subscribe({
+      next: (res) => {
+        this.owners = res
+        console.log("Owners: " + this.owners)
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
 
 
 
@@ -123,14 +137,44 @@ export class CompanyBarbersComponent implements OnInit {
       })
     }
 
+
+
   }
 
+
+  onSubmitSelectedOwner() : void {
+
+    const formData = new FormData();
+
+    formData.append('OwnerId', this.selectedOwner);
+    if(this.companyId){
+      formData.append('CompanyId', this.companyId);
+    }
+
+
+
+    /* this.authService.setOwnerCompanyId(formData).subscribe({
+      next: (response) => {
+        console.log('Company created:', response);
+        alert('Company successfully created!');
+      },
+      error: (error) => {
+        console.error('Error creating company:', error);
+        alert('Error creating company.');
+      }
+    }); */
+
+  }
 
   onHaircutChange(haircutId: string) {
     this.selectedHaircut = haircutId;
     console.log("Izabran:", this.selectedHaircut);
   }
-
+  onOwnerSelected(ownerId: string): string {
+    this.selectedOwner = ownerId;
+    console.log("Izabran:", this.selectedOwner);
+    return this.selectedOwner
+  }
 
 
   onBarberClick(barberId: string): void {

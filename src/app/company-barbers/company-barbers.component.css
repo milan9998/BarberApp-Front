@@ -12,7 +12,7 @@
 .package-item {
   display: flex;
   align-items: flex-start;
-  border-bottom: 1px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
   padding: 15px;
   cursor: pointer;
   gap: 10px;
@@ -47,3 +47,19 @@ input[type="radio"] {
   font-size: 15px;
   margin-top: 5px;
 }
+
+/* .add-owner {
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.add-owner:hover:not(:disabled) {
+  background-color: #218838;
+} */
