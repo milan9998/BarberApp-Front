@@ -1,228 +1,206 @@
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BarberService } from '../services/barber.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { CreateCompanyOwnerComponent } from '../auth/create-company-owner/create-company-owner.component';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { TranslatePipe } from '../pipes/translate.pipe';
+import {
+  enrichBarberProfile,
+  formatHours,
+  getShopProfile,
+  ShopProfile
+} from '../data/demo-barbershops';
 
 @Component({
   selector: 'app-company-barbers',
-  imports: [CommonModule, RouterLink, FormsModule, CreateCompanyOwnerComponent],
+  imports: [CommonModule, RouterLink, FormsModule, CreateCompanyOwnerComponent, TranslatePipe],
   templateUrl: './company-barbers.component.html',
   styleUrl: './company-barbers.component.css'
 })
-
 export class CompanyBarbersComponent implements OnInit {
-
-  check: boolean = false;
+  check = false;
   selectedAppointment: string | null = null;
   companyId: string | null = null;
   barbers: any[] = [];
   haircuts: any[] = [];
   selectedBarberId: string | null = null;
-  selectedDate: Date = new Date();
-  today: string = "";
-  datepicker: Date = new Date();
+  selectedDate: any = new Date().toISOString().split('T')[0];
+  today = '';
   company: any;
-  selectedHaircut: string = '';
-  selectedOwner: string = '';
+  profile: ShopProfile | null = null;
+  activeGalleryIndex = 0;
+  selectedOwner = '';
   owners: any[] = [];
-
-  //(YYYY-MM-DD)
   freeAppointments: any[] = [];
-  firstName: string = "";
-  lastName: string = "";
-  email: string = "";
-  phoneNumber: string = "";
-  haircut: string = "";
+  firstName = '';
+  lastName = '';
+  email = '';
+  phoneNumber = '';
+  selectedHaircut = '';
   isLoggedIn = false;
   isAdmin = false;
   isOwner = false;
   routeSubscription: Subscription | undefined;
   currentEntityId: string | null = null;
 
-  constructor(private barberService: BarberService, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(
+    private barberService: BarberService,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.routeSubscription = this.route.paramMap.subscribe(params => {
-      this.currentEntityId = params.get('id'); // 'id' mora da se poklapa sa onim u ruting konfiguraciji
-      if (this.currentEntityId) {
-        console.log('ID dohvaćen u roditelj komponenti:', this.currentEntityId);
-      } else {
-        console.warn('ID nije pronađen u URL-u roditelj komponente.');
-      }
+    this.routeSubscription = this.route.paramMap.subscribe((params) => {
+      this.currentEntityId = params.get('id');
     });
-
-
 
     this.companyId = this.route.snapshot.paramMap.get('id');
 
     if (this.companyId) {
       this.authService.checkIfCompanyOwnerExists(this.companyId).subscribe({
         next: (res) => {
-          this.check = res
-          console.log("company onwer exist: " + this.check)
-        },
-        error: (err) => {
-          // greška
+          this.check = res;
         }
       });
-    } else {
-      console.error("Nedostaje companyId u URL-u");
     }
 
-
-    this.authService.isLoggedin$.subscribe(status => {
-      this.isLoggedIn = status
-    })
-
-
+    this.authService.isLoggedin$.subscribe((status) => {
+      this.isLoggedIn = status;
+    });
 
     this.isAdmin = this.authService.isAdmin();
-
     this.isOwner = this.authService.isOwner();
-
-    const now = new Date();
-
-    this.today = now.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
-
+    this.today = new Date().toISOString().split('T')[0];
 
     this.authService.getOwners().subscribe({
       next: (res) => {
-        this.owners = res
-        console.log("Owners: " + this.owners)
-      },
-      error: (err) => {
-        console.log(err)
+        this.owners = res;
       }
-    })
+    });
 
-
-
-
-    if (this.companyId) {
-      this.barberService.getAllBarbersByCompanyId(this.companyId).subscribe({
-        next: (data) => {
-          this.barbers = data;
-          console.log(this.barbers)
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
-
-      this.barberService.getCompanyDetailsById(this.companyId).subscribe({
-        next: (data) => {
-          this.company = data;
-          console.log(this.company)
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
-
-      this.barberService.getAllHaircutsByCompanyId(this.companyId).subscribe({
-        next: (data) => {
-          this.haircuts = data;
-          if (this.haircuts.length > 0) {
-            this.selectedHaircut = this.haircuts[0].haircutId;
-          }
-          console.log(this.haircuts)
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      })
+    if (!this.companyId) {
+      return;
     }
 
-
-
-  }
-
-
-  onSubmitSelectedOwner() : void {
-
-    const formData = new FormData();
-
-    formData.append('OwnerId', this.selectedOwner);
-    if(this.companyId){
-      formData.append('CompanyId', this.companyId);
-    }
-
-
-
-    /* this.authService.setOwnerCompanyId(formData).subscribe({
-      next: (response) => {
-        console.log('Company created:', response);
-        alert('Company successfully created!');
+    this.barberService.getAllBarbersByCompanyId(this.companyId).subscribe({
+      next: (data) => {
+        const companyName = this.company?.companyName ?? '';
+        this.barbers = data.map((barber: any, index: number) => {
+          const enrichment = enrichBarberProfile(companyName || barber.companyName || 'shop', barber.barberName, index);
+          return {
+            ...barber,
+            ...enrichment,
+            hoursLabel: formatHours(barber.individualStartTime, barber.individualEndTime)
+          };
+        });
       },
-      error: (error) => {
-        console.error('Error creating company:', error);
-        alert('Error creating company.');
-      }
-    }); */
+      error: (err) => console.error(err)
+    });
 
+    this.barberService.getCompanyDetailsById(this.companyId).subscribe({
+      next: (data) => {
+        this.profile = getShopProfile(data.companyName);
+        this.company = {
+          ...data,
+          imageUrl: this.profile.gallery,
+          ...this.profile
+        };
+
+        this.barbers = this.barbers.map((barber: any, index: number) => {
+          const enrichment = enrichBarberProfile(data.companyName, barber.barberName, index);
+          return {
+            ...barber,
+            ...enrichment,
+            hoursLabel: formatHours(barber.individualStartTime, barber.individualEndTime)
+          };
+        });
+      },
+      error: (err) => console.error(err)
+    });
+
+    this.barberService.getAllHaircutsByCompanyId(this.companyId).subscribe({
+      next: (data) => {
+        this.haircuts = data;
+        if (this.haircuts.length > 0) {
+          this.selectedHaircut = this.haircuts[0].haircutId;
+        }
+      },
+      error: (err) => console.log(err)
+    });
   }
 
-  onHaircutChange(haircutId: string) {
+  get selectedBarber(): any | null {
+    return this.barbers.find((barber) => barber.barberId === this.selectedBarberId) ?? null;
+  }
+
+  setGallery(index: number): void {
+    this.activeGalleryIndex = index;
+  }
+
+  nextGallery(): void {
+    if (!this.company?.imageUrl?.length) {
+      return;
+    }
+    this.activeGalleryIndex = (this.activeGalleryIndex + 1) % this.company.imageUrl.length;
+  }
+
+  prevGallery(): void {
+    if (!this.company?.imageUrl?.length) {
+      return;
+    }
+    this.activeGalleryIndex =
+      (this.activeGalleryIndex - 1 + this.company.imageUrl.length) % this.company.imageUrl.length;
+  }
+
+  onSubmitSelectedOwner(): void {
+    // Owner assignment wiring remains available for admin flows.
+  }
+
+  onHaircutChange(haircutId: string): void {
     this.selectedHaircut = haircutId;
-    console.log("Izabran:", this.selectedHaircut);
   }
+
   onOwnerSelected(ownerId: string): string {
     this.selectedOwner = ownerId;
-    console.log("Izabran:", this.selectedOwner);
-    return this.selectedOwner
+    return this.selectedOwner;
   }
-
 
   onBarberClick(barberId: string): void {
     this.selectedBarberId = barberId;
+    this.selectedAppointment = null;
     this.loadAppointments();
+    setTimeout(() => {
+      document.getElementById('booking-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   }
 
   onDateChange(): void {
-    if (typeof this.selectedDate === 'string') {
-      this.selectedDate = new Date(this.selectedDate); // konvertuj iz stringa u Date
-    }
-
     if (this.selectedBarberId) {
       this.loadAppointments();
     }
   }
+
   onDatePick(date: string): void {
     this.selectedAppointment = date;
-    console.log(date)
   }
 
   loadAppointments(): void {
-    //const date = new Date(this.selectedDate); //  osiguraj da je Date objekat
+    const dateValue =
+      typeof this.selectedDate === 'string' ? new Date(this.selectedDate) : this.selectedDate;
 
-    this.barberService.getAllFreeAppointmentsByBarberId(this.selectedDate, this.selectedBarberId!).subscribe({
+    this.barberService.getAllFreeAppointmentsByBarberId(dateValue, this.selectedBarberId!).subscribe({
       next: (data) => {
-        console.log(data);
-        this.freeAppointments = data
-        console.log(this.freeAppointments)
+        this.freeAppointments = data;
       },
       error: (err) => console.error(err)
     });
   }
-  /*
-  
-  */
 
   onSubmit(): void {
     const formData = new FormData();
-
-    let selectedDateTime: Date;
-    if (typeof this.datepicker === 'string') {
-      selectedDateTime = new Date(this.datepicker);
-    } else {
-      selectedDateTime = this.datepicker;
-    }
-
-    // Dodaj sva polja sa tačnim nazivima koje backend očekuje
     formData.append('Schedule.firstName', this.firstName);
     formData.append('Schedule.lastName', this.lastName);
     formData.append('Schedule.email', this.email);
@@ -234,17 +212,9 @@ export class CompanyBarbersComponent implements OnInit {
       formData.append('Schedule.barberId', this.selectedBarberId);
     }
 
-    // Poziv servisa
     this.barberService.createSchedule(formData).subscribe({
-      next: (response) => {
-        console.log('Uspešno zakazano:', response);
-      },
-      error: (error) => {
-        console.error('Greška prilikom zakazivanja:', error);
-      }
+      next: (response) => console.log('Uspešno zakazano:', response),
+      error: (error) => console.error('Greška prilikom zakazivanja:', error)
     });
-
   }
-
-
 }

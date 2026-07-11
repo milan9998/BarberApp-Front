@@ -1,109 +1,199 @@
-/*:host {
-  display: block;
-  background-image: url('https://www.wineenthusiast.com/wp-content/uploads/2022/09/HERO_Barbershop_Cuts_and_Cocktails_Credit_David_J_Crewe_1920x1280-1280x853.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  padding-top: 20px;
-}
-*/
-/* Glavna pozadina sa staklastim efektom */
-.container-fluid {
-  background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 16px;
-  padding: 30px;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+.market-page {
+  max-width: 1150px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.8rem;
+  padding-bottom: 2rem;
 }
 
-/* Dugme za kreiranje kompanije */
-.custom-button {
-  background-color: rgba(210, 180, 140, 0.85);
-  color: #000;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.market-hero {
+  padding-top: 0.4rem;
+  animation: rise 0.7s ease both;
 }
 
-.custom-button:hover {
-  background-color: rgba(210, 180, 140, 1);
-  transform: scale(1.03);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+.market-kicker {
+  margin: 0 0 0.65rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #3d6aa8;
 }
 
-/* Stil kartice za kompaniju */
-.company-card {
-  background-color: rgba(245, 222, 179, 0.88);
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-  padding: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.market-hero h1 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #14233f;
+  letter-spacing: -0.03em;
+}
+
+.market-hero p {
+  margin: 0.75rem 0 0;
+  max-width: 42rem;
+  color: #4a6085;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.market-loading {
+  color: #5a7196;
+}
+
+.market-admin {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  justify-content: flex-end;
+}
+
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem 1.2rem;
+}
+
+.market-card {
+  text-decoration: none;
+  color: inherit;
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 0;
+  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  transition: transform 0.35s ease, border-color 0.35s ease;
+  animation: rise 0.8s ease both;
+}
+
+.market-card:hover {
+  transform: translateY(-4px);
+  border-top-color: #2a5290;
+}
+
+.market-media {
   position: relative;
+  min-height: 260px;
+  overflow: hidden;
 }
 
-/* Hover efekat na karticu */
-.company-card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+.market-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(1.06) contrast(1.04);
+  transition: transform 0.7s ease;
 }
 
-/* Naslov kompanije */
-.company-card h5 {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 18px;
-  color: #3b2f2f;
-  margin-bottom: 10px;
+.market-card:hover .market-media img {
+  transform: scale(1.05);
 }
 
-/* Dugme za detalje */
-.company-card a.btn-primary {
-  background-color: #6d4c41;
-  border: none;
-  color: white;
-  font-weight: bold;
-  transition: transform 0.3s ease;
-}
-
-.company-card a.btn-primary:hover {
-  background-color: #5d4037;
-  transform: scale(1.03);
-}
-
-/* Carousel strelice */
-button.btn-light {
-  opacity: 0.85;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 20px;
-  padding: 0;
+.market-media-meta {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  background-color: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  border: none;
+  flex-wrap: wrap;
+  gap: 0.45rem;
 }
 
-/* Poruka ako nema slike */
-.no-image {
+.market-media-meta span {
+  background: rgba(10, 18, 36, 0.72);
+  color: #edf3ff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.28rem 0.5rem;
+}
+
+.market-copy {
+  padding: 1rem 0.2rem 1rem 1.1rem;
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+}
+
+.market-copy h2 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-size: 1.45rem;
+  color: #14233f;
+  letter-spacing: -0.02em;
+}
+
+.market-location {
+  margin: 0;
+  color: #3d6aa8;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.market-desc {
+  margin: 0;
+  color: #526b93;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.market-specs {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f0f0f0;
-  border: 1px dashed #aaa;
-  height: 200px;
-  color: #777;
-  font-style: italic;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.7rem;
+  margin-top: 0.15rem;
+}
+
+.market-specs span {
+  font-size: 0.75rem;
+  color: #2a5290;
+  border-bottom: 1px solid rgba(42, 82, 144, 0.25);
+}
+
+.market-cta {
+  margin-top: 0.55rem;
+  width: fit-content;
+  font-weight: 700;
+  color: #1d3f74;
+  border-bottom: 1px solid rgba(29, 63, 116, 0.35);
+  font-size: 0.9rem;
+}
+
+.market-card,
+.market-hero {
+  opacity: 0;
+  animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.market-card:nth-child(1) { animation-delay: 0.05s; }
+.market-card:nth-child(2) { animation-delay: 0.12s; }
+.market-card:nth-child(3) { animation-delay: 0.19s; }
+.market-card:nth-child(4) { animation-delay: 0.26s; }
+.market-card:nth-child(5) { animation-delay: 0.33s; }
+.market-card:nth-child(6) { animation-delay: 0.4s; }
+.market-card:nth-child(n + 7) { animation-delay: 0.45s; }
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .market-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .market-card {
+    grid-template-columns: 1fr;
+  }
+
+  .market-media {
+    min-height: 220px;
+  }
+
+  .market-copy {
+    padding-left: 0;
+  }
 }

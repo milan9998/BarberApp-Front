@@ -1,47 +1,47 @@
-<div class="container-fluid mt-4">
+<section class="market-page">
+  <header class="market-hero">
+    <p class="market-kicker">{{ 'companies.kicker' | t }}</p>
+    <h1>{{ 'companies.title' | t }}</h1>
+    <p>{{ 'companies.subtitle' | t }}</p>
+  </header>
 
-  <div *ngIf="companies.length === 0" class="text-center">
-    <p class="text-muted fs-5">Učitavanje kompanija...</p>
+  <div *ngIf="companies.length === 0" class="market-loading">
+    <p>{{ 'companies.loading' | t }}</p>
   </div>
 
-  <div *ngIf="isLoggedIn && isAdmin" class="text-end mb-3">
-    <button class="custom-button" routerLink="/create-company">
-      ➕ Kreiraj svoju kompaniju!
-    </button>
+  <div *ngIf="isLoggedIn && isAdmin" class="market-admin">
+    <a class="premium-btn premium-btn-primary" routerLink="/create-company">+ {{ 'companies.create' | t }}</a>
   </div>
 
-  <div *ngIf="filteredCompaniesByOwnerId.length > 0 || companies.length > 0" class="container">
-    <div class="row justify-content-center">
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let company of filteredCompaniesByOwnerId.length ? filteredCompaniesByOwnerId : companies">
-        <div class="company-card">
-
-          <!-- Slika kompanije (prva ako postoji) -->
-           <img *ngIf="company.imageUrl && company.imageUrl.length"
-              [src]="company.imageUrl[company.currentImageIndex || 0]"
-              alt="{{ company.companyName }}"
-              class="img-fluid rounded mb-2 w-100"
-              style="height: 200px; object-fit: cover;"
-              referrerpolicy="no-referrer" />
-
-          <button *ngIf="company.imageUrl.length > 1"
-            class="btn btn-light position-absolute top-50 start-0 translate-middle-y" (click)="prevImage(company)">
-            ‹
-          </button>
-
-          <!-- Strelica desno -->
-          <button *ngIf="company.imageUrl.length > 1"
-            class="btn btn-light position-absolute top-50 end-0 translate-middle-y" (click)="nextImage(company)">
-            ›
-          </button>
-          <!-- Tekst i dugme -->
-          <div class="text-center mt-2">
-            <h5>{{ company.companyName }}</h5>
-            <a [routerLink]="['/companies', company.companyId]" class="btn btn-primary mt-2 w-100">
-              Detalji
-            </a>
-          </div>
+  <div class="market-grid" *ngIf="filteredCompaniesByOwnerId.length > 0 || companies.length > 0">
+    <a
+      class="market-card"
+      *ngFor="let company of filteredCompaniesByOwnerId.length ? filteredCompaniesByOwnerId : companies"
+      [routerLink]="['/companies', company.companyId]"
+      (mouseenter)="onCardEnter(company)"
+      (mouseleave)="onCardLeave(company)"
+    >
+      <div class="market-media">
+        <img
+          *ngIf="company.imageUrl?.length"
+          [src]="company.imageUrl[company.currentImageIndex || 0]"
+          [alt]="company.companyName"
+          referrerpolicy="no-referrer"
+        />
+        <div class="market-media-meta">
+          <span>{{ company.tag }}</span>
+          <span>{{ company.priceRange }}</span>
         </div>
       </div>
-    </div>
+      <div class="market-copy">
+        <h2>{{ company.companyName }}</h2>
+        <p class="market-location">{{ company.location }}</p>
+        <p class="market-desc">{{ company.shortDescription || company.description }}</p>
+        <div class="market-specs">
+          <span *ngFor="let item of company.specialties?.slice(0, 3)">{{ item }}</span>
+        </div>
+        <span class="market-cta">{{ 'companies.details' | t }}</span>
+      </div>
+    </a>
   </div>
-</div>
+</section>

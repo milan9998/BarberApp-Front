@@ -1,0 +1,8 @@
+.auth-card {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.register-submit {
+  grid-column: 1 / -1;
+}

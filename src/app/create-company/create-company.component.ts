@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { BarberService } from '../services/barber.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { TranslatePipe } from '../pipes/translate.pipe';
 interface DisplayFile {
     file: File;
     name: string;
@@ -11,7 +12,7 @@ interface DisplayFile {
 }
 @Component({
   selector: 'app-create-company',
- imports: [FormsModule, CommonModule],
+ imports: [FormsModule, CommonModule, TranslatePipe],
   templateUrl: './create-company.component.html',
   styleUrl: './create-company.component.css'
  

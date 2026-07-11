@@ -1,50 +1,42 @@
-<!-- Glavna sekcija sa pozadinom -->
-<div class="barber-form-bg d-flex justify-content-center align-items-center min-vh-100">
-  <!-- Poluprovidna kutija sa formom -->
-  <div class="col-md-6 bg-white bg-opacity-75 p-5 rounded-4 shadow-lg">
-    <h3 class="mb-4 text-center text-primary">Dodaj frizera</h3>
+<section class="premium-page">
+  <div class="premium-card form-card">
+    <h2 class="premium-title">{{ 'createBarber.title' | t }}</h2>
+    <p class="premium-subtitle">{{ 'createBarber.subtitle' | t }}</p>
 
-    <form #barberForm="ngForm" (ngSubmit)="onSubmit(barberForm)">
-      <label for="barberName">Ime frizera</label>
-      <div class=" mb-3">
-
-        <input id="barberName" name="barberName" type="text" required class="form-control"
-          placeholder="Unesite ime frizera" ngModel />
-
-      </div>
-      <label for="phoneNumber">Broj telefona</label>
-      <div class=" mb-3">
-        <input id="phoneNumber" name="phoneNumber" type="text" required class="form-control"
-          placeholder="primer : +381 6(1-9) 123456" ngModel />
-
-      </div>
-      <label for="email">Email</label>
-      <div class=" mb-3">
-        <input id="email" name="email" type="email" required class="form-control" placeholder="primer: barber@gmail.com"
-          ngModel />
-
-      </div>
-      <label for="password">Lozinka Barbera</label>
-      <div class=" mb-3">
-        <input id="password" name="password" type="password" required class="form-control" placeholder=""
-          ngModel />
-
-      </div>
-      
-
-      <div class="mb-3">
-        <label for="individualStartTime" class="form-label">Početak rada:</label>
-        <input id="individualStartTime" name="individualStartTime" type="time" required class="form-control" ngModel />
+    <form class="premium-form premium-grid-2" #barberForm="ngForm" (ngSubmit)="onSubmit(barberForm)">
+      <div class="premium-field">
+        <label class="premium-label" for="barberName">{{ 'createBarber.name' | t }}</label>
+        <input id="barberName" name="barberName" type="text" required class="premium-input" ngModel />
       </div>
 
-      <div class="mb-4">
-        <label for="individualEndTime" class="form-label">Kraj rada:</label>
-        <input id="individualEndTime" name="individualEndTime" type="time" required class="form-control" ngModel />
+      <div class="premium-field">
+        <label class="premium-label" for="phoneNumber">{{ 'createBarber.phone' | t }}</label>
+        <input id="phoneNumber" name="phoneNumber" type="text" required class="premium-input" ngModel />
       </div>
 
-      <div class="text-center">
-        <button type="submit" class="btn btn-success px-5">Sačuvaj frizera</button>
+      <div class="premium-field">
+        <label class="premium-label" for="email">{{ 'createBarber.email' | t }}</label>
+        <input id="email" name="email" type="email" required class="premium-input" ngModel />
+      </div>
+
+      <div class="premium-field">
+        <label class="premium-label" for="password">{{ 'createBarber.password' | t }}</label>
+        <input id="password" name="password" type="password" required class="premium-input" ngModel />
+      </div>
+
+      <div class="premium-field">
+        <label class="premium-label" for="individualStartTime">{{ 'createBarber.start' | t }}</label>
+        <input id="individualStartTime" name="individualStartTime" type="time" required class="premium-input" ngModel />
+      </div>
+
+      <div class="premium-field">
+        <label class="premium-label" for="individualEndTime">{{ 'createBarber.end' | t }}</label>
+        <input id="individualEndTime" name="individualEndTime" type="time" required class="premium-input" ngModel />
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="premium-btn premium-btn-primary">{{ 'createBarber.submit' | t }}</button>
       </div>
     </form>
   </div>
-</div>
+</section>

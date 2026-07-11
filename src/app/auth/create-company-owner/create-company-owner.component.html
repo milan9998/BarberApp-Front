@@ -1,35 +1,39 @@
-<h4>Kreiraj Vlasnika Berbernice</h4>
-<form (ngSubmit)="onSubmit()" #form="ngForm" class="form-container">
-  <div class="form-group">
-    <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="Ime" required #firstNameModel="ngModel" />
-    <div class="error" *ngIf="firstNameModel.invalid && firstNameModel.touched">Ime je obavezno.</div>
-  </div>
+<section class="owner-section">
+  <h4 class="owner-title">{{ 'owner.title' | t }}</h4>
+  <p class="owner-subtitle">{{ 'owner.subtitle' | t }}</p>
 
-  <div class="form-group">
-    <input type="text" name="lastName" [(ngModel)]="lastName" placeholder="Prezime" required #lastNameModel="ngModel" />
-    <div class="error" *ngIf="lastNameModel.invalid && lastNameModel.touched">Prezime je obavezno.</div>
-  </div>
+  <form (ngSubmit)="onSubmit()" #form="ngForm" class="form-container">
+    <div class="form-group">
+      <input type="text" name="firstName" [(ngModel)]="firstName" [placeholder]="'auth.firstName' | t" required #firstNameModel="ngModel" />
+      <div class="error" *ngIf="firstNameModel.invalid && firstNameModel.touched">{{ 'common.required' | t }}</div>
+    </div>
 
-  <div class="form-group">
-    <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required email #emailModel="ngModel" />
-    <div class="error" *ngIf="emailModel.invalid && emailModel.touched">Validan email je obavezan.</div>
-  </div>
+    <div class="form-group">
+      <input type="text" name="lastName" [(ngModel)]="lastName" [placeholder]="'auth.lastName' | t" required #lastNameModel="ngModel" />
+      <div class="error" *ngIf="lastNameModel.invalid && lastNameModel.touched">{{ 'common.required' | t }}</div>
+    </div>
 
-  <div class="form-group">
-    <input type="text" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="Telefon" required #phoneModel="ngModel" />
-    <div class="error" *ngIf="phoneModel.invalid && phoneModel.touched">Telefon je obavezan.</div>
-  </div>
+    <div class="form-group">
+      <input type="email" name="email" [(ngModel)]="email" [placeholder]="'auth.email' | t" required email #emailModel="ngModel" />
+      <div class="error" *ngIf="emailModel.invalid && emailModel.touched">{{ 'common.required' | t }}</div>
+    </div>
 
-  <div class="form-group">
-    <input type="password" name="password" [(ngModel)]="password" placeholder="Lozinka" required minlength="6" #passModel="ngModel" />
-    <div class="error" *ngIf="passModel.invalid && passModel.touched">Lozinka mora imati najmanje 6 karaktera.</div>
-  </div>
+    <div class="form-group">
+      <input type="text" name="phoneNumber" [(ngModel)]="phoneNumber" [placeholder]="'auth.phone' | t" required #phoneModel="ngModel" />
+      <div class="error" *ngIf="phoneModel.invalid && phoneModel.touched">{{ 'common.required' | t }}</div>
+    </div>
 
-  <div class="form-group">
-    <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Potvrdi lozinku" required #confirmModel="ngModel" />
-    <div class="error" *ngIf="confirmModel.invalid && confirmModel.touched">Potvrda lozinke je obavezna.</div>
-    <div class="error" *ngIf="password !== confirmPassword && confirmModel.touched">Lozinke se ne poklapaju.</div>
-  </div>
+    <div class="form-group">
+      <input type="password" name="password" [(ngModel)]="password" [placeholder]="'auth.password' | t" required minlength="6" #passModel="ngModel" />
+      <div class="error" *ngIf="passModel.invalid && passModel.touched">{{ 'common.required' | t }}</div>
+    </div>
 
-  <button type="submit" [disabled]="form.invalid || password !== confirmPassword">Kreiraj Vlasnika</button>
-</form>
+    <div class="form-group">
+      <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" [placeholder]="'auth.confirmPassword' | t" required #confirmModel="ngModel" />
+      <div class="error" *ngIf="confirmModel.invalid && confirmModel.touched">{{ 'common.required' | t }}</div>
+      <div class="error" *ngIf="password !== confirmPassword && confirmModel.touched">{{ 'common.required' | t }}</div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || password !== confirmPassword">{{ 'owner.submit' | t }}</button>
+  </form>
+</section>

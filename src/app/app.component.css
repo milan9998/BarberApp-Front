@@ -1,40 +1,116 @@
-mat-toolbar {
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(14, 23, 52, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.9rem 1.4rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
-.divklasa {
-  display: block;
-  background-size: cover;
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  padding-top: 40px;
-}
-.navbar {
-  background-color: #3f51b5;
-  padding: 1rem;
+
+.brand {
   display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #ecf4ff;
+  text-decoration: none;
+}
+
+.brand strong {
+  font-family: "Fraunces", serif;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-icon {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6ba3ff, #9f8eff);
+  font-size: 1rem;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-text small {
+  color: #bdd2f0;
+  font-size: 0.72rem;
 }
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 0.45rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .nav-button {
-  color: white;
+  color: #f6f9ff;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border: none;
-  background: none;
-  font-weight: bold;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  font-weight: 600;
+  font-size: 0.84rem;
   cursor: pointer;
+  transition: 0.2s ease;
+  white-space: nowrap;
 }
 
 .nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.nav-accent {
+  background: rgba(108, 160, 255, 0.2);
+  border-color: rgba(108, 160, 255, 0.35);
+}
+
+.lang-switch {
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.12);
+  color: #eff6ff;
+  border-radius: 10px;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lang-switch:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.logout-btn {
+  font-family: inherit;
+}
+
+.app-shell {
+  min-height: calc(100vh - 72px);
+  padding: 1.2rem 1rem 2rem;
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    padding: 0.8rem 1rem;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .app-shell {
+    padding: 1rem;
+  }
 }

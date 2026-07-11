@@ -10,10 +10,16 @@ import { RegisterComponent } from './auth/register/register.component';
 import { CreateCompanyOwnerComponent } from './auth/create-company-owner/create-company-owner.component';
 import { AddHaircutComponent } from './add-haircut/add-haircut.component';
 import { OwnerGuard } from './auth/guards/owner-guard';
+import { AboutComponent } from './pages/about/about.component';
+import { HowItWorksComponent } from './pages/how-it-works/how-it-works.component';
+import { PlatformServicesComponent } from './pages/platform-services/platform-services.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'companies', pathMatch: 'full' },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
+    { path: 'about', component: AboutComponent },
+    { path: 'how-it-works', component: HowItWorksComponent },
+    { path: 'services', component: PlatformServicesComponent },
     { path: 'companies', component: CompaniesComponent },
     { path: 'companies/:id', component: CompanyBarbersComponent },
     { path: 'create-company', component: CreateCompanyComponent, canActivate: [AdminGuard] },
@@ -22,7 +28,4 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'create-company-owner/:companyId', component: CreateCompanyOwnerComponent, canActivate: [AdminGuard] }
-
-
-
 ];

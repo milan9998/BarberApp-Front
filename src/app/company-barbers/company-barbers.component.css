@@ -1,65 +1,526 @@
-.carousel-inner img {
-  max-height: 400px;
+.shop-page {
+  margin: -1.2rem -1rem 0;
+}
+
+.shop-hero {
+  position: relative;
+  min-height: min(78vh, 640px);
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  animation: shop-fade 0.9s ease both;
+}
+
+.shop-hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(8, 14, 28, 0.2) 0%, rgba(8, 14, 28, 0.55) 48%, rgba(8, 14, 28, 0.9) 100%),
+    linear-gradient(90deg, rgba(8, 14, 28, 0.75), rgba(8, 14, 28, 0.15) 70%);
+}
+
+.shop-hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 1150px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3.5rem 1.4rem 2.6rem;
+  color: #f3f7ff;
+}
+
+.shop-kicker,
+.section-kicker {
+  margin: 0 0 0.7rem;
+  font-family: "Sora", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9eb6dc;
+}
+
+.section-kicker {
+  color: #3d6aa8;
+}
+
+.shop-hero-copy h1 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  max-width: 14ch;
+}
+
+.shop-lead {
+  margin: 1rem 0 0;
+  max-width: 38rem;
+  color: #d5e1f5;
+  line-height: 1.65;
+  font-size: 1.05rem;
+}
+
+.shop-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.1rem;
+  color: #b7c8e4;
+  font-size: 0.9rem;
+}
+
+.shop-hero-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1.4rem;
+}
+
+.shop-text-link {
+  color: #edf3ff;
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(237, 243, 255, 0.4);
+  padding-bottom: 0.1rem;
+}
+
+.shop-body {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 1.5rem 1.4rem 3.5rem;
+  display: grid;
+  gap: 2.4rem;
+}
+
+.gallery-rail {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: -2.4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.gallery-thumbs button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 0.72;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.gallery-thumbs button.active,
+.gallery-thumbs button:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.gallery-thumbs img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-nav {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid rgba(36, 68, 122, 0.22);
+  background: rgba(255, 255, 255, 0.9);
+  color: #1d3f74;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.shop-section h2 {
+  margin: 0 0 0.8rem;
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  color: #14233f;
+  letter-spacing: -0.02em;
+}
+
+.shop-section p {
+  margin: 0 0 0.9rem;
+  color: #4a6085;
+  line-height: 1.75;
+  max-width: 46rem;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 2rem;
+}
+
+.info-panel {
+  display: grid;
+  gap: 1.1rem;
+  padding: 1.2rem 0;
+  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  border-bottom: 1px solid rgba(36, 68, 122, 0.16);
+  align-content: start;
+}
+
+.info-panel strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-family: "Sora", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3d6aa8;
+}
+
+.info-panel span,
+.info-panel li {
+  color: #45597c;
+  line-height: 1.55;
+}
+
+.info-panel ul {
+  margin: 0.2rem 0 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+
+.action-row {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(47, 99, 185, 0.35);
+  color: #234987;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.barber-card {
+  display: grid;
+  grid-template-columns: 0.9fr 1.2fr;
+  gap: 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  background: transparent;
+}
+
+.barber-card:hover,
+.barber-card.selected {
+  transform: translateY(-3px);
+  border-top-color: #2a5290;
+}
+
+.barber-photo-wrap {
+  min-height: 280px;
+  overflow: hidden;
+}
+
+.barber-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(1.05) contrast(1.04);
+  transition: transform 0.6s ease;
+}
+
+.barber-card:hover .barber-photo-wrap img {
+  transform: scale(1.04);
+}
+
+.barber-copy {
+  padding: 1.1rem 1.1rem 1.2rem 1.2rem;
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+}
+
+.barber-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #3d6aa8;
+}
+
+.barber-copy h3 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-size: 1.45rem;
+  color: #14233f;
+}
+
+.barber-bio {
+  margin: 0 !important;
+  font-size: 0.94rem !important;
+  line-height: 1.55 !important;
+}
+
+.barber-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+}
+
+.barber-tags span {
+  font-size: 0.74rem;
+  color: #2a5290;
+  border-bottom: 1px solid rgba(42, 82, 144, 0.28);
+  padding-bottom: 0.05rem;
+}
+
+.barber-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  color: #6a7f9f;
+  font-size: 0.82rem;
+  margin-top: 0.2rem;
+}
+
+.book-barber-btn {
+  margin-top: 0.55rem;
+  width: fit-content;
+  border: 0;
+  background: transparent;
+  color: #1d3f74;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  border-bottom: 1px solid rgba(29, 63, 116, 0.35);
+}
+
+.menu-grid {
+  display: grid;
+  gap: 0;
+  margin-top: 1rem;
+}
+
+.menu-grid article {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.95rem 0;
+  border-top: 1px solid rgba(36, 68, 122, 0.14);
+}
+
+.menu-grid h3 {
+  margin: 0;
+  font-family: "Sora", sans-serif;
+  font-size: 1rem;
+  color: #173056;
+}
+
+.menu-grid span {
+  color: #6a7f9f;
+  font-size: 0.85rem;
+}
+
+.menu-grid strong {
+  font-family: "Fraunces", serif;
+  font-size: 1.2rem;
+  color: #173056;
+  white-space: nowrap;
+}
+
+.booking-panel {
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  display: grid;
+  gap: 0.9rem;
+}
+
+.booking-head {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.booking-head img {
+  width: 84px;
+  height: 84px;
   object-fit: cover;
 }
 
-.packages-container {
-  max-width: 700px;
+.booking-head h2 {
+  margin-bottom: 0.2rem;
+}
 
-  font-family: Arial, sans-serif;
+.booking-head p {
+  margin: 0;
+}
+
+.date-input {
+  max-width: 280px;
+}
+
+.appointments-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.appointment-card {
+  border: 1px solid rgba(36, 68, 122, 0.18);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.85rem 0.7rem;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 0.2rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.appointment-card strong {
+  font-family: "Fraunces", serif;
+  font-size: 1.25rem;
+  color: #14233f;
+}
+
+.appointment-card span,
+.appointment-card em {
+  font-style: normal;
+  color: #5a7196;
+  font-size: 0.8rem;
+}
+
+.appointment-card.selected {
+  border-color: #2a5290;
+  background: rgba(42, 82, 144, 0.08);
+}
+
+.packages-container {
+  max-width: 100%;
+  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  padding-top: 0.8rem;
+}
+
+.packages-container.full,
+.full {
+  grid-column: 1 / -1;
 }
 
 .package-item {
   display: flex;
   align-items: flex-start;
-  /* border-bottom: 1px solid #ccc; */
-  padding: 15px;
+  border-bottom: 1px solid rgba(59, 94, 151, 0.14);
+  padding: 0.85rem 0.2rem;
   cursor: pointer;
-  gap: 10px;
-}
-
-.package-item:hover {
-  background-color: #f9f9f9;
-}
-
-input[type="radio"] {
-  margin-top: 6px;
-  transform: scale(1.2);
+  gap: 0.7rem;
 }
 
 .package-content {
   display: flex;
   flex-direction: column;
+  gap: 0.1rem;
 }
 
 .type {
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 700;
+  color: #173056;
 }
 
 .duration {
-  font-size: 13px;
-  color: #666;
+  font-size: 0.82rem;
+  color: #6a7f9f;
 }
 
 .price {
-  font-weight: bold;
-  font-size: 15px;
-  margin-top: 5px;
+  font-family: "Fraunces", serif;
+  font-size: 1.05rem;
+  color: #1d3f74;
 }
 
-/* .add-owner {
-  width: 100%;
-  background-color: #28a745;
-  color: white;
-  padding: 12px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
-.add-owner:hover:not(:disabled) {
-  background-color: #218838;
-} */
+.panel {
+  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  padding-top: 1rem;
+}
+
+.booking-form {
+  margin-top: 0.4rem;
+}
+
+@keyframes shop-fade {
+  from {
+    opacity: 0.65;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 980px) {
+  .story-grid,
+  .team-grid,
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .barber-card {
+    grid-template-columns: 1fr;
+  }
+
+  .barber-photo-wrap {
+    min-height: 240px;
+  }
+
+  .appointments-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .shop-page {
+    margin: -1rem -0.75rem 0;
+  }
+
+  .gallery-thumbs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .appointments-grid {
+    grid-template-columns: 1fr;
+  }
+}

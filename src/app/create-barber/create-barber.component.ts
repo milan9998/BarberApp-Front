@@ -4,10 +4,11 @@ import { BarberService } from '../services/barber.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-create-barber',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './create-barber.component.html',
   styleUrl: './create-barber.component.css'
 })

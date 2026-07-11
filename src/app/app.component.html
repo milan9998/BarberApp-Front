@@ -1,20 +1,25 @@
-<header class="navbar">
-  <nav class="nav-links">
-    <a class="nav-button" routerLink="/home">Home</a>
-    <a class="nav-button" routerLink="/companies">Companies</a>
-    <a class="nav-button" routerLink="/about">About</a>
-    <a class="nav-button" routerLink="/contact">Contact</a>
-
-    <a *ngIf="isLoggedIn" class="nav-button" (click)="logout()">Logout</a>
-
-    <div *ngIf="!isLoggedIn" class="auth-buttons">
-      <a class="nav-button" routerLink="/login">Login</a>
-      <a class="nav-button" routerLink="/register">Register</a>
+<header class="topbar">
+  <a class="brand" routerLink="/home">
+    <span class="brand-icon">✂</span>
+    <div class="brand-text">
+      <strong>{{ 'brand.name' | t }}</strong>
+      <small>{{ 'brand.tagline' | t }}</small>
     </div>
+  </a>
+
+  <nav class="nav-links">
+    <a class="nav-button" routerLink="/home">{{ 'nav.home' | t }}</a>
+    <a class="nav-button" routerLink="/companies">{{ 'nav.companies' | t }}</a>
+    <a class="nav-button" routerLink="/about">{{ 'nav.about' | t }}</a>
+    <a class="nav-button" routerLink="/how-it-works">{{ 'nav.how' | t }}</a>
+    <a class="nav-button" routerLink="/services">{{ 'nav.services' | t }}</a>
+    <a *ngIf="!isLoggedIn" class="nav-button" routerLink="/login">{{ 'nav.login' | t }}</a>
+    <a *ngIf="!isLoggedIn" class="nav-button nav-accent" routerLink="/register">{{ 'nav.register' | t }}</a>
+    <button *ngIf="isLoggedIn" class="nav-button nav-accent logout-btn" (click)="logout()">{{ 'nav.logout' | t }}</button>
+    <button class="lang-switch" type="button" (click)="toggleLanguage()">{{ 'lang.switch' | t }}</button>
   </nav>
 </header>
 
-
-<div class="divklasa">
+<main class="app-shell">
   <router-outlet></router-outlet>
-</div>
+</main>

@@ -1,10 +1,25 @@
+.owner-section {
+  margin-top: 0.5rem;
+}
+
+.owner-title {
+  margin: 0;
+  color: #1f3667;
+}
+
+.owner-subtitle {
+  margin: 0.35rem 0 0.9rem;
+  color: #607ca9;
+}
+
 .form-container {
-  max-width: 400px;
-  margin: 40px auto;
-  background: #f8f8f8;
-  padding: 25px;
+  max-width: 100%;
+  margin: 0;
+  background: rgba(248, 251, 255, 0.84);
+  padding: 18px;
   border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(78, 111, 164, 0.25);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
   font-family: sans-serif;
 }
 
@@ -14,16 +29,17 @@
 
 input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 10px 12px;
+  border: 1px solid #b7c8e8;
+  border-radius: 10px;
+  font-size: 15px;
+  background: #fff;
   box-sizing: border-box;
   transition: border-color 0.3s;
 }
 
 input:focus {
-  border-color: #007bff;
+  border-color: #4e79c8;
   outline: none;
 }
 
@@ -35,12 +51,13 @@ input:focus {
 
 button {
   width: 100%;
-  background-color: #28a745;
+  background: linear-gradient(135deg, #2f63b9, #4d82db);
   color: white;
   padding: 12px;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 700;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -51,5 +68,5 @@ button:disabled {
 }
 
 button:hover:not(:disabled) {
-  background-color: #218838;
+  filter: brightness(1.05);
 }

@@ -3,10 +3,11 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BarberService } from '../services/barber.service';
 import { Subscription } from 'rxjs';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-add-haircut',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './add-haircut.component.html',
   styleUrl: './add-haircut.component.css'
 })

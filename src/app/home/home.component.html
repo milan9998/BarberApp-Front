@@ -1,1 +1,163 @@
-<p>home works!</p>
+<section class="home-root">
+  <section class="home-hero" *ngIf="activeCompany as shop" [style.backgroundImage]="'url(' + heroImage + ')'">
+    <div class="home-hero-veil"></div>
+    <div class="home-hero-copy" [attr.data-anim]="heroAnimKey">
+      <p class="home-brand rise rise-1">{{ 'brand.name' | t }}</p>
+      <p class="hero-shop-tag rise rise-2">{{ 'home.topShops' | t }} · {{ shop.tag }}</p>
+      <h1 class="rise rise-3">{{ shop.companyName }}</h1>
+      <p class="home-lead rise rise-4">{{ shop.description }}</p>
+      <p class="hero-location rise rise-5">{{ shop.location }}</p>
+      <div class="home-hero-actions rise rise-6">
+        <a class="premium-btn premium-btn-primary" [routerLink]="['/companies', shop.companyId]">
+          {{ 'home.viewShop' | t }}
+        </a>
+        <a class="hero-secondary" routerLink="/companies">{{ 'home.ctaPrimary' | t }}</a>
+      </div>
+
+      <div class="hero-tabs rise rise-7" *ngIf="featuredCompanies.length">
+        <button
+          type="button"
+          *ngFor="let company of featuredCompanies; let i = index"
+          [class.active]="i === activeCompanyIndex"
+          (click)="setCompany(i)"
+        >
+          <span class="tab-index">0{{ i + 1 }}</span>
+          <span class="tab-name">{{ company.companyName }}</span>
+          <span class="tab-loc">{{ company.location }}</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="home-body">
+    <section class="home-section reveal">
+      <h2>{{ 'home.storyTitle' | t }}</h2>
+      <p>{{ 'home.storyP1' | t }}</p>
+      <p>{{ 'home.storyP2' | t }}</p>
+      <p>{{ 'home.storyP3' | t }}</p>
+    </section>
+
+    <section class="home-metrics reveal">
+      <article>
+        <strong>20+</strong>
+        <span>{{ 'home.metric1' | t }}</span>
+      </article>
+      <article>
+        <strong>20</strong>
+        <span>{{ 'home.metric2' | t }}</span>
+      </article>
+      <article>
+        <strong>80</strong>
+        <span>{{ 'home.metric3' | t }}</span>
+      </article>
+      <article>
+        <strong>EN/SR</strong>
+        <span>{{ 'home.metric4' | t }}</span>
+      </article>
+    </section>
+
+    <section class="home-section reveal">
+      <div class="section-head">
+        <h2>{{ 'home.featuredTitle' | t }}</h2>
+        <p>{{ 'home.featuredText' | t }}</p>
+      </div>
+      <div class="featured-strip" *ngIf="featuredCompanies.length">
+        <a
+          class="featured-item rise-card"
+          *ngFor="let company of featuredCompanies; let i = index"
+          [routerLink]="['/companies', company.companyId]"
+          [style.animationDelay]="(i * 0.12) + 's'"
+          (mouseenter)="setCompany(i)"
+        >
+          <img [src]="company.imageUrl[0]" [alt]="company.companyName" loading="lazy" />
+          <div>
+            <strong>{{ company.companyName }}</strong>
+            <span>{{ company.location }}</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="home-split reveal">
+      <article>
+        <h2>{{ 'home.forClientsTitle' | t }}</h2>
+        <p>{{ 'home.forClientsText' | t }}</p>
+        <ul>
+          <li>{{ 'home.forClients1' | t }}</li>
+          <li>{{ 'home.forClients2' | t }}</li>
+          <li>{{ 'home.forClients3' | t }}</li>
+        </ul>
+        <a routerLink="/companies">{{ 'home.forClientsCta' | t }}</a>
+      </article>
+      <article>
+        <h2>{{ 'home.forOwnersTitle' | t }}</h2>
+        <p>{{ 'home.forOwnersText' | t }}</p>
+        <ul>
+          <li>{{ 'home.forOwners1' | t }}</li>
+          <li>{{ 'home.forOwners2' | t }}</li>
+          <li>{{ 'home.forOwners3' | t }}</li>
+        </ul>
+        <a routerLink="/services">{{ 'home.forOwnersCta' | t }}</a>
+      </article>
+    </section>
+
+    <section class="home-section reveal">
+      <h2>{{ 'home.howTitle' | t }}</h2>
+      <p>{{ 'home.howIntro' | t }}</p>
+      <div class="home-steps">
+        <article>
+          <span>01</span>
+          <h3>{{ 'home.step1Title' | t }}</h3>
+          <p>{{ 'home.step1Text' | t }}</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>{{ 'home.step2Title' | t }}</h3>
+          <p>{{ 'home.step2Text' | t }}</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>{{ 'home.step3Title' | t }}</h3>
+          <p>{{ 'home.step3Text' | t }}</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>{{ 'home.step4Title' | t }}</h3>
+          <p>{{ 'home.step4Text' | t }}</p>
+        </article>
+      </div>
+      <a class="inline-link" routerLink="/how-it-works">{{ 'home.howCta' | t }}</a>
+    </section>
+
+    <section class="home-section dense reveal">
+      <h2>{{ 'home.depthTitle' | t }}</h2>
+      <p>{{ 'home.depthP1' | t }}</p>
+      <p>{{ 'home.depthP2' | t }}</p>
+      <p>{{ 'home.depthP3' | t }}</p>
+    </section>
+
+    <section class="home-links reveal">
+      <a routerLink="/about">
+        <strong>{{ 'nav.about' | t }}</strong>
+        <span>{{ 'home.linkAbout' | t }}</span>
+      </a>
+      <a routerLink="/how-it-works">
+        <strong>{{ 'nav.how' | t }}</strong>
+        <span>{{ 'home.linkHow' | t }}</span>
+      </a>
+      <a routerLink="/services">
+        <strong>{{ 'nav.services' | t }}</strong>
+        <span>{{ 'home.linkServices' | t }}</span>
+      </a>
+    </section>
+
+    <section class="home-final reveal">
+      <h2>{{ 'home.finalTitle' | t }}</h2>
+      <p>{{ 'home.finalText' | t }}</p>
+      <div class="home-hero-actions">
+        <a class="premium-btn premium-btn-primary" routerLink="/companies">{{ 'home.ctaPrimary' | t }}</a>
+        <a class="hero-secondary dark" routerLink="/register">{{ 'home.ctaSecondary' | t }}</a>
+      </div>
+    </section>
+  </div>
+</section>

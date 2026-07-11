@@ -1,0 +1,93 @@
+<section class="content-page how-page">
+  <header class="content-hero">
+    <p class="content-kicker">{{ isSr ? 'Vodič' : 'Guide' }}</p>
+    <h1>{{ isSr ? 'Kako se koristi Barber Visual — od registracije do zauzete stolice' : 'How to use Barber Visual — from signup to a filled chair' }}</h1>
+    <p class="content-lead">
+      {{ isSr
+        ? 'Platforma ima dva jasna puta: put klijenta (rezervacija) i put vlasnika (operativa). Ispod je detaljan tok koji možeš da pratiš korak po korak.'
+        : 'The platform has two clear paths: the client path (booking) and the owner path (operations). Below is the detailed flow you can follow step by step.' }}
+    </p>
+  </header>
+
+  <article class="content-block">
+    <h2>{{ isSr ? '1) Put klijenta — rezervacija termina' : '1) Client path — booking an appointment' }}</h2>
+    <ol class="step-list">
+      <li>
+        <strong>{{ isSr ? 'Otvori marketplace' : 'Open the marketplace' }}</strong>
+        <p>{{ isSr ? 'Idi na Kompanije i pregledaj profile berbernica. Svaki profil ima lokaciju, opis, tag i galeriju — da odmah razumeš stil salona.' : 'Go to Companies and browse barbershop profiles. Each profile includes location, description, tag, and gallery — so you immediately understand the shop’s style.' }}</p>
+      </li>
+      <li>
+        <strong>{{ isSr ? 'Izaberi salon' : 'Choose a shop' }}</strong>
+        <p>{{ isSr ? 'Otvori detalj kompanije. Tu vidiš frizere, pakete usluga i dostupne termine. Ovo je srce rezervacije.' : 'Open company details. There you see barbers, service packages, and available slots. This is the heart of booking.' }}</p>
+      </li>
+      <li>
+        <strong>{{ isSr ? 'Izaberi frizera i uslugu' : 'Pick barber and service' }}</strong>
+        <p>{{ isSr ? 'Odaberi frizera čiji stil ti odgovara, zatim uslugu (npr. classic cut, skin fade, hot towel shave). Cena i trajanje su vidljivi unapred — nema iznenađenja na kasi.' : 'Select the barber whose style fits you, then the service (classic cut, skin fade, hot towel shave, etc.). Price and duration are visible upfront — no checkout surprises.' }}</p>
+      </li>
+      <li>
+        <strong>{{ isSr ? 'Odaberi datum i slot' : 'Select date and slot' }}</strong>
+        <p>{{ isSr ? 'Kalendar pokazuje slobodne termine za izabranog frizera. Klikneš slot, popuniš kontakt podatke i potvrdiš rezervaciju.' : 'The calendar shows free slots for the selected barber. Click a slot, enter contact details, and confirm the booking.' }}</p>
+      </li>
+      <li>
+        <strong>{{ isSr ? 'Dođi na vreme' : 'Arrive on time' }}</strong>
+        <p>{{ isSr ? 'Rezervacija je snimljena. Salon zna ko dolazi, koja je usluga i koliko traje — pa se red smanjuje, a kvalitet usluge raste.' : 'The booking is recorded. The shop knows who is coming, which service is booked, and how long it takes — queues shrink and service quality rises.' }}</p>
+      </li>
+    </ol>
+  </article>
+
+  <article class="content-block">
+    <h2>{{ isSr ? '2) Put vlasnika — vođenje salona' : '2) Owner path — running the shop' }}</h2>
+    <ol class="step-list">
+      <li>
+        <strong>{{ isSr ? 'Kreiraj kompaniju' : 'Create the company' }}</strong>
+        <p>{{ isSr ? 'Admin kreira profil berbernice: naziv, vizuelni identitet i galeriju. To je javni brend salona na marketplace-u.' : 'An admin creates the barbershop profile: name, visual identity, and gallery. That becomes the public brand on the marketplace.' }}</p>
+      </li>
+      <li>
+        <strong>{{ isSr ? 'Dodeli vlasnika' : 'Assign an owner' }}</strong>
+        <p>{{ isSr ? 'Vlasnik dobija nalog i pristup operativnim funkcijama: frizeri, usluge i dnevni rad salona.' : 'The owner gets an account and access to operational features: barbers, services, and day-to-day shop work.' }}</p>
+      </li>
+      <li>
+        <strong>{{ isSr ? 'Dodaj frizere' : 'Add barbers' }}</strong>
+        <p>{{ isSr ? 'Za svakog frizera definišeš kontakt i radno vreme. Raspored termina se onda gradi oko realnog kapaciteta tima, ne oko pretpostavki.' : 'For each barber you define contact details and working hours. Appointment schedules then build around real team capacity, not assumptions.' }}</p>
+      </li>
+      <li>
+        <strong>{{ isSr ? 'Definiši usluge' : 'Define services' }}</strong>
+        <p>{{ isSr ? 'Svaka usluga ima tip, cenu i trajanje. To je katalog koji klijent vidi i koji platforma koristi da zaštiti raspored od preklapanja.' : 'Each service has a type, price, and duration. That catalog is what clients see and what the platform uses to protect the schedule from overlaps.' }}</p>
+      </li>
+      <li>
+        <strong>{{ isSr ? 'Prati rezervacije' : 'Track bookings' }}</strong>
+        <p>{{ isSr ? 'Kada klijenti rezervišu, salon dobija strukturisan tok: ko, šta, kada. Manje improvizacije, više kontrole nad danom.' : 'When clients book, the shop gets a structured flow: who, what, when. Less improvisation, more control of the day.' }}</p>
+      </li>
+    </ol>
+  </article>
+
+  <article class="content-block">
+    <h2>{{ isSr ? '3) Najbolje prakse za uspeh na platformi' : '3) Best practices for success on the platform' }}</h2>
+    <ul class="content-list">
+      <li>{{ isSr ? 'Drži galeriju ažurnom — klijenti kupuju vizuelni utisak pre nego što kupe termin.' : 'Keep the gallery current — clients buy visual trust before they buy a slot.' }}</li>
+      <li>{{ isSr ? 'Piši jasne nazive usluga i realna trajanja — to smanjuje kašnjenja i konflikte.' : 'Write clear service names and realistic durations — that reduces delays and conflicts.' }}</li>
+      <li>{{ isSr ? 'Ažuriraj radno vreme frizera čim se promeni smena.' : 'Update barber hours as soon as a shift changes.' }}</li>
+      <li>{{ isSr ? 'Koristi marketplace kao prodajni kanal, ne samo kao kalendar.' : 'Use the marketplace as a sales channel, not only as a calendar.' }}</li>
+    </ul>
+  </article>
+
+  <article class="content-block tip-block">
+    <h2>{{ isSr ? 'Brzi scenario (2 minuta)' : 'Quick scenario (2 minutes)' }}</h2>
+    <p>
+      {{ isSr
+        ? 'Registruj se → otvori Kompanije → izaberi salon → izaberi frizera → izaberi uslugu → odaberi datum → potvrdi slot. Ako si vlasnik, pre toga dodaj frizere i usluge da marketplace izgleda potpuno i ozbiljno.'
+        : 'Register → open Companies → choose a shop → choose a barber → choose a service → pick a date → confirm a slot. If you are an owner, add barbers and services first so the marketplace looks complete and serious.' }}
+    </p>
+  </article>
+
+  <footer class="content-cta">
+    <div>
+      <h2>{{ isSr ? 'Spreman da probaš?' : 'Ready to try?' }}</h2>
+      <p>{{ isSr ? 'Idi direktno u marketplace ili pogledaj koje usluge platforma nudi vlasnicima i klijentima.' : 'Go straight to the marketplace or review which platform services we offer to owners and clients.' }}</p>
+    </div>
+    <div class="content-cta-actions">
+      <a class="premium-btn premium-btn-primary" routerLink="/companies">{{ isSr ? 'Započni rezervaciju' : 'Start booking' }}</a>
+      <a class="content-link" routerLink="/services">{{ isSr ? 'Usluge platforme' : 'Platform services' }}</a>
+    </div>
+  </footer>
+</section>

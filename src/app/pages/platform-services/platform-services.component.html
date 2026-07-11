@@ -1,0 +1,108 @@
+<section class="content-page services-page">
+  <header class="content-hero">
+    <p class="content-kicker">{{ isSr ? 'Usluge platforme' : 'Platform services' }}</p>
+    <h1>{{ isSr ? 'Čime Barber Visual uslužuje klijente, frizere i vlasnike' : 'What Barber Visual delivers to clients, barbers, and owners' }}</h1>
+    <p class="content-lead">
+      {{ isSr
+        ? 'Ovo nije lista ukrasnih feature-a. Ovo je katalog poslovnih sposobnosti: rezervacije, operativni panel, marketplace prezentacija i višejezični prodajni sloj.'
+        : 'This is not a decorative feature list. This is a catalog of business capabilities: bookings, operations panel, marketplace presentation, and a bilingual sales layer.' }}
+    </p>
+  </header>
+
+  <article class="content-block">
+    <h2>{{ isSr ? 'Za klijente' : 'For clients' }}</h2>
+    <div class="service-grid">
+      <div>
+        <h3>{{ isSr ? 'Marketplace berbernica' : 'Barbershop marketplace' }}</h3>
+        <p>{{ isSr ? 'Pregledaj profile salona sa lokacijom, stilom i galerijom. Brzo uporedi opcije umesto da lutaš po društvenim mrežama.' : 'Browse shop profiles with location, style, and gallery. Compare options quickly instead of wandering through social media.' }}</p>
+      </div>
+      <div>
+        <h3>{{ isSr ? 'Online zakazivanje' : 'Online booking' }}</h3>
+        <p>{{ isSr ? 'Izaberi frizera, uslugu, datum i slot. Rezervacija je strukturisana i vidljiva — bez čekanja na poruku ili poziv.' : 'Choose barber, service, date, and slot. The booking is structured and visible — no waiting on a message or call.' }}</p>
+      </div>
+      <div>
+        <h3>{{ isSr ? 'Transparentne usluge' : 'Transparent services' }}</h3>
+        <p>{{ isSr ? 'Cena i trajanje su deo kataloga. Znaš šta plaćaš i koliko traje pre nego što potvrdiš termin.' : 'Price and duration are part of the catalog. You know what you pay and how long it takes before you confirm.' }}</p>
+      </div>
+      <div>
+        <h3>{{ isSr ? 'Dvojezično iskustvo' : 'Bilingual experience' }}</h3>
+        <p>{{ isSr ? 'Cela prezentacija radi na engleskom i srpskom, što olakšava lokalnu i međunarodnu upotrebu.' : 'The full presentation works in English and Serbian, which supports both local and international use.' }}</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="content-block">
+    <h2>{{ isSr ? 'Za vlasnike salona' : 'For shop owners' }}</h2>
+    <div class="service-grid">
+      <div>
+        <h3>{{ isSr ? 'Profil kompanije' : 'Company profile' }}</h3>
+        <p>{{ isSr ? 'Brendiraj salon: naziv, slike, marketplace prisustvo. Tvoj profil je prodajna stranica, ne samo unos u bazi.' : 'Brand the shop: name, images, marketplace presence. Your profile is a sales page, not just a database row.' }}</p>
+      </div>
+      <div>
+        <h3>{{ isSr ? 'Upravljanje timom' : 'Team management' }}</h3>
+        <p>{{ isSr ? 'Dodaj frizere, kontakte i radno vreme. Kapacitet salona postaje merljiv i zakaziv.' : 'Add barbers, contacts, and working hours. Shop capacity becomes measurable and bookable.' }}</p>
+      </div>
+      <div>
+        <h3>{{ isSr ? 'Katalog usluga' : 'Service catalog' }}</h3>
+        <p>{{ isSr ? 'Kreiraj pakete (šišanje, fade, brijanje, grooming) sa cenom i trajanjem. To je osnova za predvidiv dnevni ritam.' : 'Create packages (cut, fade, shave, grooming) with price and duration. That is the base for a predictable daily rhythm.' }}</p>
+      </div>
+      <div>
+        <h3>{{ isSr ? 'Owner pristup' : 'Owner access' }}</h3>
+        <p>{{ isSr ? 'Vlasnik ima zaštićene tokove za dodavanje frizera i usluga, odvojeno od javnog klijenata.' : 'Owners get protected flows for adding barbers and services, separated from the public client journey.' }}</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="content-block">
+    <h2>{{ isSr ? 'Operativne prednosti' : 'Operational advantages' }}</h2>
+    <ul class="content-list">
+      <li>{{ isSr ? 'Manje no-show rizika jer je termin jasan i snimljen.' : 'Lower no-show risk because the appointment is clear and recorded.' }}</li>
+      <li>{{ isSr ? 'Manje dvostrukih rezervacija kroz slot-based model.' : 'Fewer double bookings through a slot-based model.' }}</li>
+      <li>{{ isSr ? 'Bolja popunjenost dana jer klijenti rezervišu van radnog vremena salona.' : 'Better day fill-rate because clients can book outside shop phone hours.' }}</li>
+      <li>{{ isSr ? 'Lakša onboarding prezentacija za investitore i partnere — platforma izgleda kao proizvod, ne kao skica.' : 'Easier onboarding presentation for investors and partners — the platform looks like a product, not a sketch.' }}</li>
+    </ul>
+  </article>
+
+  <article class="content-block">
+    <h2>{{ isSr ? 'Šta platforma trenutno demonstrira u podacima' : 'What the platform currently demonstrates in data' }}</h2>
+    <p>
+      {{ isSr
+        ? 'U demo okruženju već postoji marketplace sa više od 20 berbernica inspirisanih stvarnim globalnim brendovima, 20 frizera i 80 usluga. To omogućava da se produkt testira kao ozbiljna platforma: listanje, detalj, filtriranje pažnje kroz galerije, i kompletan booking tok.'
+        : 'In the demo environment there are already 20+ barbershops inspired by real global brands, 20 barbers, and 80 services. That lets the product be tested as a serious platform: listing, detail, attention through galleries, and a complete booking flow.' }}
+    </p>
+    <div class="stat-row">
+      <div>
+        <strong>B2C</strong>
+        <span>{{ isSr ? 'klijent pronalazi salon i zakazuje' : 'client finds a shop and books' }}</span>
+      </div>
+      <div>
+        <strong>B2B</strong>
+        <span>{{ isSr ? 'vlasnik vodi tim i katalog' : 'owner runs team and catalog' }}</span>
+      </div>
+      <div>
+        <strong>EN/SR</strong>
+        <span>{{ isSr ? 'dvojezična prezentacija proizvoda' : 'bilingual product presentation' }}</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="content-block">
+    <h2>{{ isSr ? 'Šta sledi u razvoju' : 'What comes next in development' }}</h2>
+    <p>
+      {{ isSr
+        ? 'Sledeći logični sloj uključuje notifikacije, naprednu analitiku popunjenosti, politiku otkazivanja, loyalty i još jači owner dashboard. Temelj je već tu: kompanije, frizeri, usluge i termini.'
+        : 'The next logical layer includes notifications, occupancy analytics, cancellation policy, loyalty, and a stronger owner dashboard. The foundation is already here: companies, barbers, services, and appointments.' }}
+    </p>
+  </article>
+
+  <footer class="content-cta">
+    <div>
+      <h2>{{ isSr ? 'Probaj usluge u praksi' : 'Try the services in practice' }}</h2>
+      <p>{{ isSr ? 'Otvori marketplace ili pročitaj ko smo i zašto gradimo ovu platformu.' : 'Open the marketplace or read who we are and why we build this platform.' }}</p>
+    </div>
+    <div class="content-cta-actions">
+      <a class="premium-btn premium-btn-primary" routerLink="/companies">{{ isSr ? 'Pogledaj salone' : 'Browse shops' }}</a>
+      <a class="content-link" routerLink="/about">{{ isSr ? 'O nama' : 'About us' }}</a>
+    </div>
+  </footer>
+</section>

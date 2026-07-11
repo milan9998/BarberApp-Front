@@ -1,10 +1,36 @@
-<form (ngSubmit)="onSubmit()">
-  <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="Ime" required />
-  <input type="text" name="lastName" [(ngModel)]="lastName" placeholder="Prezime" required />
-  <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
-  <input type="text" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="Telefon" required />
-  <input type="password" name="password" [(ngModel)]="password" placeholder="Lozinka" required />
-  <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Potvrdi lozinku" required />
+<section class="premium-page">
+  <div class="premium-card auth-card">
+    <h2 class="premium-title">{{ 'auth.registerTitle' | t }}</h2>
+    <p class="premium-subtitle">{{ 'auth.registerSubtitle' | t }}</p>
 
-  <button type="submit">Registruj se</button>
-</form>
+    <form class="premium-form premium-grid-2" (ngSubmit)="onSubmit()">
+      <div class="premium-field">
+        <label class="premium-label">{{ 'auth.firstName' | t }}</label>
+        <input class="premium-input" type="text" name="firstName" [(ngModel)]="firstName" required />
+      </div>
+      <div class="premium-field">
+        <label class="premium-label">{{ 'auth.lastName' | t }}</label>
+        <input class="premium-input" type="text" name="lastName" [(ngModel)]="lastName" required />
+      </div>
+      <div class="premium-field">
+        <label class="premium-label">{{ 'auth.email' | t }}</label>
+        <input class="premium-input" type="email" name="email" [(ngModel)]="email" required />
+      </div>
+      <div class="premium-field">
+        <label class="premium-label">{{ 'auth.phone' | t }}</label>
+        <input class="premium-input" type="text" name="phoneNumber" [(ngModel)]="phoneNumber" required />
+      </div>
+      <div class="premium-field">
+        <label class="premium-label">{{ 'auth.password' | t }}</label>
+        <input class="premium-input" type="password" name="password" [(ngModel)]="password" required />
+      </div>
+      <div class="premium-field">
+        <label class="premium-label">{{ 'auth.confirmPassword' | t }}</label>
+        <input class="premium-input" type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required />
+      </div>
+      <div class="register-submit">
+        <button class="premium-btn premium-btn-primary" type="submit">{{ 'auth.registerButton' | t }}</button>
+      </div>
+    </form>
+  </div>
+</section>

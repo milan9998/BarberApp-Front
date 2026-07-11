@@ -1,9 +1,20 @@
-<form (ngSubmit)="onSubmit()" #loginForm="ngForm" enctype="multipart/form-data">
-    <label for="email">Email:</label>
-    <input type="text" id="email" name="email" [(ngModel)]="email" required/>
+<section class="premium-page">
+  <div class="premium-card auth-card">
+    <h2 class="premium-title">{{ 'auth.loginTitle' | t }}</h2>
+    <p class="premium-subtitle">{{ 'auth.loginSubtitle' | t }}</p>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" [(ngModel)]="password" required/>
+    <form class="premium-form" (ngSubmit)="onSubmit()" #loginForm="ngForm" enctype="multipart/form-data">
+      <div class="premium-field">
+        <label class="premium-label" for="email">{{ 'auth.email' | t }}</label>
+        <input class="premium-input" type="text" id="email" name="email" [(ngModel)]="email" required />
+      </div>
 
-    <button type="submit">Login</button>
-</form>
+      <div class="premium-field">
+        <label class="premium-label" for="password">{{ 'auth.password' | t }}</label>
+        <input class="premium-input" type="password" id="password" name="password" [(ngModel)]="password" required />
+      </div>
+
+      <button class="premium-btn premium-btn-primary" type="submit">{{ 'auth.loginButton' | t }}</button>
+    </form>
+  </div>
+</section>
