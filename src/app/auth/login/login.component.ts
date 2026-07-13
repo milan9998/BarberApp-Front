@@ -1,58 +1,102 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TranslatePipe, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  email: string = '';
-  password: string = '';
-  
+export class LoginComponent implements OnInit {
+  email = '';
+  password = '';
+  isSubmitting = false;
+  feedback = '';
+  feedbackIsError = false;
 
-  constructor(private authService: AuthService,private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
-
+  ngOnInit(): void {
+    const notice = this.route.snapshot.queryParamMap.get('notice');
+    if (notice === 'verify') {
+      this.feedbackIsError = false;
+      this.feedback = 'Nalog je kreiran. Proverite email i kliknite na verifikacioni link pre prijave.';
+    } else if (notice === 'verified') {
+      this.feedbackIsError = false;
+      this.feedback = 'Email je uspešno verifikovan. Sada se možete prijaviti.';
+    }
+  }
 
   onSubmit(): void {
+    this.feedback = '';
+    this.feedbackIsError = false;
+
+    if (!this.email.trim() || !this.password) {
+      this.showError('Unesite email i lozinku.');
+      return;
+    }
+
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.isSubmitting = true;
     const formData = new FormData();
-
-    formData.append('LoginDto.Email', this.email);
+    formData.append('LoginDto.Email', this.email.trim());
     formData.append('LoginDto.Password', this.password);
-
 
     this.authService.login(formData).subscribe({
       next: (response) => {
-        this.router.navigate(['/home'])
-
-        this.authService.setOwnerCompanyId(response.companyId);
-
-        console.log('Login successful:', response);
-        
+        this.isSubmitting = false;
+        if (response?.companyIds?.length) {
+          this.authService.setOwnerCompanyId(response.companyIds[0]);
+        } else if (response?.companyId) {
+          this.authService.setOwnerCompanyId(response.companyId);
+        }
+        this.router.navigate(['/home']);
       },
       error: (error: HttpErrorResponse) => {
-        if (error.status === 400 && error.error?.errors) {
-          const validationErrors = error.error.errors;
-          const messages: string[] = [];
-
-          for (const field in validationErrors) {
-            if (validationErrors.hasOwnProperty(field)) {
-              messages.push(...validationErrors[field]);
-            }
-          }
-          alert(messages.join('\n'));
-        } else if (error.status === 500) {
-          alert(error.error.message);
-          console.log(error.error.message);
-        }
+        this.isSubmitting = false;
+        this.showError(this.extractError(error));
       }
     });
   }
-}
 
+  private showError(message: string): void {
+    this.feedbackIsError = true;
+    this.feedback = message;
+  }
+
+  private extractError(error: HttpErrorResponse): string {
+    if (error.status === 0) {
+      return 'API nije dostupan. Proverite da li backend radi.';
+    }
+
+    if (error.error?.errors) {
+      const validationErrors = error.error.errors;
+      const messages: string[] = [];
+      for (const field of Object.keys(validationErrors)) {
+        messages.push(...validationErrors[field]);
+      }
+      if (messages.length) {
+        return messages.join('\n');
+      }
+    }
+
+    const detail = error.error?.detail || error.error?.title || error.error?.message;
+    if (typeof detail === 'string' && detail.trim()) {
+      return detail;
+    }
+
+    return 'Prijava nije uspela. Proverite podatke.';
+  }
+}

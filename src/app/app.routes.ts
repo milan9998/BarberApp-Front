@@ -12,6 +12,7 @@ import { AddHaircutComponent } from './add-haircut/add-haircut.component';
 import { OwnerGuard } from './auth/guards/owner-guard';
 import { AboutComponent } from './pages/about/about.component';
 import { HowItWorksComponent } from './pages/how-it-works/how-it-works.component';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 import { PlatformServicesComponent } from './pages/platform-services/platform-services.component';
 
 export const routes: Routes = [
@@ -27,5 +28,6 @@ export const routes: Routes = [
     { path: 'create-haircut/:companyId', component: AddHaircutComponent, canActivate: [OwnerGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'verify-email', component: VerifyEmailComponent },
     { path: 'create-company-owner/:companyId', component: CreateCompanyOwnerComponent, canActivate: [AdminGuard] }
 ];

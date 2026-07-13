@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CompanyConfigModel } from '../models/company.config';
+import { API_BASE_URL } from '../config/api.config';
 
 
 
@@ -10,9 +11,9 @@ import { CompanyConfigModel } from '../models/company.config';
 })
 
 export class BarberService {
-  private companyUrl = 'http://localhost:5045/company';
-  private barberUrl = 'http://localhost:5045/barber';
-  private scheduleUrl = 'http://localhost:5045/schedule';
+  private companyUrl = `${API_BASE_URL}/company`;
+  private barberUrl = `${API_BASE_URL}/barber`;
+  private scheduleUrl = `${API_BASE_URL}/schedule`;
   
   constructor(private http: HttpClient) { }
 

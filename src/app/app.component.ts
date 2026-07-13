@@ -15,7 +15,7 @@ import { I18nService } from './services/i18n.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'BarberVisual';
+  title = 'Barber Control Headquarters';
   isLoggedIn = false;
   constructor(
     private authService: AuthService,

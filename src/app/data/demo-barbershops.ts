@@ -446,7 +446,7 @@ export function getShopProfile(companyName: string): ShopProfile {
     shortDescription:
       'A curated barbershop profile with online booking, premium services, and a modern customer experience.',
     story:
-      'This shop joins Barber Visual as a premium partner profile: clear service catalog, bookable capacity, and a presentation built for clients who expect more than a phone reservation.',
+      'This shop joins Barber Control Headquarters as a premium partner profile: clear service catalog, bookable capacity, and a presentation built for clients who expect more than a phone reservation.',
     atmosphere:
       'Clean premium interiors, professional pacing, and a booking-first client journey.'
   });

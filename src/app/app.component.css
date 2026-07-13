@@ -5,11 +5,12 @@
   background: rgba(14, 23, 52, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.9rem 1.4rem;
+  padding: 0.65rem 1.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  min-height: 120px;
 }
 
 .brand {
@@ -18,6 +19,16 @@
   gap: 0.65rem;
   color: #ecf4ff;
   text-decoration: none;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  display: block;
+  height: 108px;
+  width: auto;
+  max-width: min(780px, 70vw);
+  object-fit: contain;
+  object-position: left center;
 }
 
 .brand strong {
@@ -108,6 +119,11 @@
     padding: 0.8rem 1rem;
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .brand-logo {
+    height: 84px;
+    max-width: min(520px, 94vw);
   }
 
   .app-shell {

@@ -1,0 +1,10 @@
+<section class="verify-page">
+  <div class="verify-card" [class.ok]="status === 'success'" [class.bad]="status === 'error'">
+    <p class="kicker">{{ 'verify.kicker' | t }}</p>
+    <h1>{{ status === 'success' ? ('verify.successTitle' | t) : ('verify.errorTitle' | t) }}</h1>
+    <p>{{ message }}</p>
+    <a class="premium-btn premium-btn-primary" routerLink="/login" [queryParams]="{ notice: status === 'success' ? 'verified' : null }">
+      {{ 'verify.goLogin' | t }}
+    </a>
+  </div>
+</section>

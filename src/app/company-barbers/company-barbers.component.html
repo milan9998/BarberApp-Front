@@ -126,7 +126,13 @@
               <span>{{ barber.hoursLabel }}</span>
             </div>
             <button type="button" class="book-barber-btn">
-              {{ selectedBarberId === barber.barberId ? ('company.selectedBarber' | t) : ('company.bookWith' | t) }}
+              {{
+                selectedBarberId === barber.barberId
+                  ? ('company.selectedBarber' | t)
+                  : isLoggedIn
+                    ? ('company.bookWith' | t)
+                    : ('company.registerAndBook' | t)
+              }}
             </button>
           </div>
         </article>
@@ -158,73 +164,103 @@
         </div>
       </div>
 
-      <label class="premium-label">{{ 'company.pickDate' | t }}</label>
-      <input
-        type="date"
-        [min]="today"
-        [(ngModel)]="selectedDate"
-        (change)="onDateChange()"
-        class="premium-input date-input"
-      />
-
-      <div class="appointments-grid" *ngIf="freeAppointments.length > 0; else noAppointments">
-        <button
-          type="button"
-          class="appointment-card"
-          *ngFor="let appointment of freeAppointments"
-          [class.selected]="selectedAppointment === appointment.dateAndTime"
-          (click)="onDatePick(appointment.dateAndTime)"
-        >
-          <strong>{{ appointment.dateAndTime | date: 'HH:mm' : 'UTC' }}</strong>
-          <span>{{ appointment.dateAndTime | date: 'dd.MM.yyyy' : 'UTC' }}</span>
-          <em>{{ selectedAppointment === appointment.dateAndTime ? ('company.selectedSlot' | t) : ('company.chooseSlot' | t) }}</em>
-        </button>
+      <div class="booking-gate" *ngIf="!isLoggedIn; else bookingFlow">
+        <h3>{{ 'company.registerGateTitle' | t }}</h3>
+        <p>{{ 'company.registerGateText' | t }}</p>
+        <a class="premium-btn premium-btn-primary" routerLink="/register">{{ 'company.registerGateCta' | t }}</a>
+        <a class="booking-gate-login" routerLink="/login">{{ 'company.registerGateLogin' | t }}</a>
       </div>
 
-      <ng-template #noAppointments>
-        <p class="premium-muted">{{ 'company.noAppointments' | t }}</p>
-      </ng-template>
+      <ng-template #bookingFlow>
+        <label class="premium-label">{{ 'company.pickDate' | t }}</label>
+        <input
+          type="date"
+          [min]="today"
+          [(ngModel)]="selectedDate"
+          (change)="onDateChange()"
+          class="premium-input date-input"
+        />
 
-      <form class="premium-form premium-grid-2 booking-form" (ngSubmit)="onSubmit()">
-        <div class="premium-field">
-          <label class="premium-label">{{ 'company.firstName' | t }}</label>
-          <input class="premium-input" type="text" name="firstName" [(ngModel)]="firstName" />
-        </div>
-        <div class="premium-field">
-          <label class="premium-label">{{ 'company.lastName' | t }}</label>
-          <input class="premium-input" type="text" name="lastName" [(ngModel)]="lastName" />
-        </div>
-        <div class="premium-field">
-          <label class="premium-label">{{ 'company.email' | t }}</label>
-          <input class="premium-input" type="text" name="email" [(ngModel)]="email" />
-        </div>
-        <div class="premium-field">
-          <label class="premium-label">{{ 'company.phone' | t }}</label>
-          <input class="premium-input" type="text" name="phoneNumber" [(ngModel)]="phoneNumber" />
+        <div class="appointments-grid" *ngIf="freeAppointments.length > 0; else noAppointments">
+          <button
+            type="button"
+            class="appointment-card"
+            *ngFor="let appointment of freeAppointments"
+            [class.selected]="selectedAppointment === appointment.dateAndTime"
+            (click)="onDatePick(appointment.dateAndTime)"
+          >
+            <strong>{{ appointment.dateAndTime | date: 'HH:mm' }}</strong>
+            <span>{{ appointment.dateAndTime | date: 'dd.MM.yyyy' }}</span>
+            <em>{{ selectedAppointment === appointment.dateAndTime ? ('company.selectedSlot' | t) : ('company.chooseSlot' | t) }}</em>
+          </button>
         </div>
 
-        <div class="packages-container full">
-          <h5>{{ 'company.packages' | t }}</h5>
-          <label *ngFor="let haircut of haircuts" class="package-item">
+        <ng-template #noAppointments>
+          <p class="premium-muted">{{ 'company.noAppointments' | t }}</p>
+        </ng-template>
+
+        <p
+          class="booking-feedback"
+          *ngIf="bookingFeedback"
+          [class.error]="bookingFeedbackIsError"
+          [class.ok]="!bookingFeedbackIsError"
+        >
+          {{ bookingFeedback }}
+        </p>
+
+        <form class="premium-form premium-grid-2 booking-form" (ngSubmit)="onSubmit()">
+          <div class="premium-field">
+            <label class="premium-label">{{ 'company.firstName' | t }}</label>
+            <input class="premium-input" type="text" name="firstName" [(ngModel)]="firstName" required />
+          </div>
+          <div class="premium-field">
+            <label class="premium-label">{{ 'company.lastName' | t }}</label>
+            <input class="premium-input" type="text" name="lastName" [(ngModel)]="lastName" required />
+          </div>
+          <div class="premium-field">
+            <label class="premium-label">{{ 'company.email' | t }}</label>
+            <input class="premium-input" type="email" name="email" [(ngModel)]="email" required />
+          </div>
+          <div class="premium-field">
+            <label class="premium-label">{{ 'company.phone' | t }}</label>
             <input
-              type="radio"
-              name="selectedHaircut"
-              [value]="haircut.haircutId"
-              [checked]="selectedHaircut === haircut.haircutId"
-              (change)="onHaircutChange(haircut.haircutId)"
+              class="premium-input"
+              type="tel"
+              name="phoneNumber"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              [(ngModel)]="phoneNumber"
+              (ngModelChange)="onPhoneChange($event)"
+              required
             />
-            <div class="package-content">
-              <div class="type">{{ haircut.haircutType }}</div>
-              <div class="duration">{{ haircut.duration }} min</div>
-              <div class="price">{{ haircut.price | number }} USD</div>
-            </div>
-          </label>
-        </div>
+          </div>
 
-        <div class="full">
-          <button class="premium-btn premium-btn-primary w-100" type="submit">{{ 'company.bookNow' | t }}</button>
-        </div>
-      </form>
+          <div class="packages-container full">
+            <h5>{{ 'company.packages' | t }}</h5>
+            <label *ngFor="let haircut of haircuts" class="package-item">
+              <input
+                type="radio"
+                name="selectedHaircut"
+                [value]="haircut.haircutId"
+                [checked]="selectedHaircut === haircut.haircutId"
+                (change)="onHaircutChange(haircut.haircutId)"
+              />
+              <div class="package-content">
+                <div class="type">{{ haircut.haircutType }}</div>
+                <div class="duration">{{ haircut.duration }} min</div>
+                <div class="price">{{ haircut.price | number }} USD</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="full">
+            <p class="booking-hint">{{ 'company.bookingHint' | t }}</p>
+            <button class="premium-btn premium-btn-primary w-100" type="submit" [disabled]="isBooking">
+              {{ isBooking ? ('company.bookingLoading' | t) : ('company.bookNow' | t) }}
+            </button>
+          </div>
+        </form>
+      </ng-template>
     </section>
   </div>
 </section>

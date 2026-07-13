@@ -6,3 +6,109 @@
 .register-submit {
   grid-column: 1 / -1;
 }
+
+.register-submit .premium-btn,
+.feedback-btn {
+  width: 100%;
+  min-height: 48px;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.form-feedback {
+  margin: 0 0 1rem;
+  padding: 0.95rem 1rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.form-feedback strong {
+  font-family: "Fraunces", serif;
+  font-size: 1.15rem;
+}
+
+.form-feedback p {
+  margin: 0;
+}
+
+.form-feedback.error {
+  background: rgba(176, 67, 67, 0.1);
+  color: #8f2f2f;
+  border: 1px solid rgba(176, 67, 67, 0.28);
+}
+
+.form-feedback.ok {
+  background: rgba(47, 125, 87, 0.12);
+  color: #1f5f40;
+  border: 1px solid rgba(47, 125, 87, 0.3);
+}
+
+.premium-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-switch {
+  margin: 1rem 0 0;
+  color: #5a7196;
+  font-size: 0.9rem;
+}
+
+.auth-switch a {
+  color: #1d3f74;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 0.25rem;
+}
+
+.password-rules {
+  grid-column: 1 / -1;
+  margin-top: 0.15rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: rgba(29, 63, 116, 0.06);
+  border: 1px solid rgba(29, 63, 116, 0.12);
+}
+
+.password-rules-title {
+  margin: 0 0 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1d3f74;
+}
+
+.password-rules ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.password-rules li {
+  font-size: 0.86rem;
+  color: #6a7d97;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.password-rules li::before {
+  content: "○";
+  font-size: 0.75rem;
+  color: #9aa8bc;
+}
+
+.password-rules li.ok {
+  color: #1f5f40;
+  font-weight: 600;
+}
+
+.password-rules li.ok::before {
+  content: "✓";
+  color: #2f7d57;
+}

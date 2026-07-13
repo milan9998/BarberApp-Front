@@ -3,10 +3,14 @@
     <h2 class="premium-title">{{ 'auth.loginTitle' | t }}</h2>
     <p class="premium-subtitle">{{ 'auth.loginSubtitle' | t }}</p>
 
-    <form class="premium-form" (ngSubmit)="onSubmit()" #loginForm="ngForm" enctype="multipart/form-data">
+    <p class="form-feedback" *ngIf="feedback" [class.error]="feedbackIsError" [class.ok]="!feedbackIsError">
+      {{ feedback }}
+    </p>
+
+    <form class="premium-form" (ngSubmit)="onSubmit()" #loginForm="ngForm" novalidate>
       <div class="premium-field">
         <label class="premium-label" for="email">{{ 'auth.email' | t }}</label>
-        <input class="premium-input" type="text" id="email" name="email" [(ngModel)]="email" required />
+        <input class="premium-input" type="email" id="email" name="email" [(ngModel)]="email" required />
       </div>
 
       <div class="premium-field">
@@ -14,7 +18,14 @@
         <input class="premium-input" type="password" id="password" name="password" [(ngModel)]="password" required />
       </div>
 
-      <button class="premium-btn premium-btn-primary" type="submit">{{ 'auth.loginButton' | t }}</button>
+      <button class="premium-btn premium-btn-primary" type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? ('auth.loginLoading' | t) : ('auth.loginButton' | t) }}
+      </button>
     </form>
+
+    <p class="auth-switch">
+      {{ 'auth.noAccount' | t }}
+      <a routerLink="/register">{{ 'auth.registerButton' | t }}</a>
+    </p>
   </div>
 </section>

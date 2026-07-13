@@ -2,3 +2,46 @@
   max-width: 500px;
   margin: 0 auto;
 }
+
+.form-feedback {
+  margin: 0 0 1rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.form-feedback.error {
+  background: rgba(176, 67, 67, 0.1);
+  color: #8f2f2f;
+  border: 1px solid rgba(176, 67, 67, 0.28);
+}
+
+.form-feedback.ok {
+  background: rgba(47, 125, 87, 0.12);
+  color: #1f5f40;
+  border: 1px solid rgba(47, 125, 87, 0.3);
+}
+
+.premium-btn {
+  width: 100%;
+  min-height: 48px;
+}
+
+.premium-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.auth-switch {
+  margin: 1rem 0 0;
+  color: #5a7196;
+  font-size: 0.9rem;
+}
+
+.auth-switch a {
+  color: #1d3f74;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 0.25rem;
+}

@@ -43,6 +43,9 @@ export class CompanyBarbersComponent implements OnInit {
   isLoggedIn = false;
   isAdmin = false;
   isOwner = false;
+  isBooking = false;
+  bookingFeedback = '';
+  bookingFeedbackIsError = false;
   routeSubscription: Subscription | undefined;
   currentEntityId: string | null = null;
 
@@ -171,10 +174,19 @@ export class CompanyBarbersComponent implements OnInit {
   onBarberClick(barberId: string): void {
     this.selectedBarberId = barberId;
     this.selectedAppointment = null;
-    this.loadAppointments();
+    this.bookingFeedback = '';
+    if (this.isLoggedIn) {
+      this.loadAppointments();
+    } else {
+      this.freeAppointments = [];
+    }
     setTimeout(() => {
       document.getElementById('booking-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
+  }
+
+  onPhoneChange(value: string): void {
+    this.phoneNumber = (value || '').replace(/\D/g, '');
   }
 
   onDateChange(): void {
@@ -188,33 +200,94 @@ export class CompanyBarbersComponent implements OnInit {
   }
 
   loadAppointments(): void {
+    this.bookingFeedback = '';
     const dateValue =
       typeof this.selectedDate === 'string' ? new Date(this.selectedDate) : this.selectedDate;
 
     this.barberService.getAllFreeAppointmentsByBarberId(dateValue, this.selectedBarberId!).subscribe({
       next: (data) => {
-        this.freeAppointments = data;
+        this.freeAppointments = data ?? [];
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        this.freeAppointments = [];
+        this.showBookingError(this.extractError(err) || 'Ne mogu da učitam termine.');
+      }
     });
   }
 
   onSubmit(): void {
-    const formData = new FormData();
-    formData.append('Schedule.firstName', this.firstName);
-    formData.append('Schedule.lastName', this.lastName);
-    formData.append('Schedule.email', this.email);
-    formData.append('Schedule.phoneNumber', this.phoneNumber);
-    formData.append('Schedule.haircutId', this.selectedHaircut);
-    formData.append('Schedule.time', this.selectedAppointment!);
+    this.bookingFeedback = '';
+    this.bookingFeedbackIsError = false;
 
-    if (this.selectedBarberId) {
-      formData.append('Schedule.barberId', this.selectedBarberId);
+    if (!this.selectedAppointment) {
+      this.showBookingError('Izaberite termin.');
+      return;
+    }
+    if (!this.firstName.trim() || !this.lastName.trim() || !this.email.trim() || !this.phoneNumber.trim()) {
+      this.showBookingError('Popunite ime, prezime, email i telefon.');
+      return;
+    }
+    if (!this.selectedHaircut) {
+      this.showBookingError('Izaberite uslugu.');
+      return;
+    }
+    if (!this.selectedBarberId || this.isBooking) {
+      return;
     }
 
+    this.isBooking = true;
+    const formData = new FormData();
+    formData.append('Schedule.firstName', this.firstName.trim());
+    formData.append('Schedule.lastName', this.lastName.trim());
+    formData.append('Schedule.email', this.email.trim());
+    formData.append('Schedule.phoneNumber', this.phoneNumber.trim());
+    formData.append('Schedule.haircutId', this.selectedHaircut);
+    formData.append('Schedule.time', this.selectedAppointment);
+    formData.append('Schedule.barberId', this.selectedBarberId);
+
     this.barberService.createSchedule(formData).subscribe({
-      next: (response) => console.log('Uspešno zakazano:', response),
-      error: (error) => console.error('Greška prilikom zakazivanja:', error)
+      next: (response) => {
+        this.isBooking = false;
+        this.bookingFeedbackIsError = false;
+        this.bookingFeedback =
+          response?.message ||
+          `Uspešno zakazano${response?.haircutName ? ': ' + response.haircutName : ''}. Proverite email za potvrdu.`;
+        this.selectedAppointment = null;
+        this.loadAppointments();
+      },
+      error: (error) => {
+        this.isBooking = false;
+        this.showBookingError(this.extractError(error));
+      }
     });
+  }
+
+  private showBookingError(message: string): void {
+    this.bookingFeedbackIsError = true;
+    this.bookingFeedback = message;
+  }
+
+  private extractError(error: any): string {
+    if (error?.status === 0) {
+      return 'API nije dostupan. Proverite da li backend radi.';
+    }
+
+    if (error?.error?.errors) {
+      const validationErrors = error.error.errors;
+      const messages: string[] = [];
+      for (const field of Object.keys(validationErrors)) {
+        messages.push(...validationErrors[field]);
+      }
+      if (messages.length) {
+        return messages.join('\n');
+      }
+    }
+
+    const detail = error?.error?.detail || error?.error?.title || error?.error?.message;
+    if (typeof detail === 'string' && detail.trim()) {
+      return detail;
+    }
+
+    return 'Zakazivanje nije uspelo. Proverite podatke i pokušajte ponovo.';
   }
 }

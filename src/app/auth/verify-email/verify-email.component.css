@@ -1,0 +1,53 @@
+.verify-page {
+  max-width: 640px;
+  margin: 2rem auto;
+}
+
+.verify-card {
+  border-top: 2px solid #2a5290;
+  padding: 1.5rem 0;
+  display: grid;
+  gap: 0.8rem;
+  animation: rise 0.7s ease both;
+}
+
+.verify-card.ok {
+  border-top-color: #2f7d57;
+}
+
+.verify-card.bad {
+  border-top-color: #b04343;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3d6aa8;
+}
+
+.verify-card h1 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  color: #14233f;
+  font-size: 2rem;
+}
+
+.verify-card p {
+  margin: 0;
+  color: #4a6085;
+  line-height: 1.6;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -3,7 +3,15 @@
     <h2 class="premium-title">{{ 'auth.registerTitle' | t }}</h2>
     <p class="premium-subtitle">{{ 'auth.registerSubtitle' | t }}</p>
 
-    <form class="premium-form premium-grid-2" (ngSubmit)="onSubmit()">
+    <div class="form-feedback" *ngIf="feedback" [class.error]="feedbackIsError" [class.ok]="!feedbackIsError">
+      <strong *ngIf="registerSucceeded">{{ 'auth.checkEmailTitle' | t }}</strong>
+      <p>{{ feedback }}</p>
+      <button *ngIf="registerSucceeded" type="button" class="premium-btn premium-btn-primary feedback-btn" (click)="goToLogin()">
+        {{ 'auth.goLoginAfterVerify' | t }}
+      </button>
+    </div>
+
+    <form *ngIf="!registerSucceeded" class="premium-form premium-grid-2" (ngSubmit)="onSubmit()" #registerForm="ngForm" novalidate>
       <div class="premium-field">
         <label class="premium-label">{{ 'auth.firstName' | t }}</label>
         <input class="premium-input" type="text" name="firstName" [(ngModel)]="firstName" required />
@@ -18,19 +26,52 @@
       </div>
       <div class="premium-field">
         <label class="premium-label">{{ 'auth.phone' | t }}</label>
-        <input class="premium-input" type="text" name="phoneNumber" [(ngModel)]="phoneNumber" required />
+        <input
+          class="premium-input"
+          type="tel"
+          name="phoneNumber"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          [(ngModel)]="phoneNumber"
+          (ngModelChange)="onPhoneChange($event)"
+          required
+          placeholder="3816..."
+        />
       </div>
       <div class="premium-field">
         <label class="premium-label">{{ 'auth.password' | t }}</label>
-        <input class="premium-input" type="password" name="password" [(ngModel)]="password" required />
+        <input class="premium-input" type="password" name="password" [(ngModel)]="password" required minlength="6" autocomplete="new-password" />
       </div>
       <div class="premium-field">
         <label class="premium-label">{{ 'auth.confirmPassword' | t }}</label>
-        <input class="premium-input" type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required />
+        <input class="premium-input" type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required autocomplete="new-password" />
       </div>
+      <div class="password-rules">
+        <p class="password-rules-title">{{ 'auth.passwordRulesTitle' | t }}</p>
+        <ul>
+          <li [class.ok]="passwordHasMinLength">{{ 'auth.passwordRuleLength' | t }}</li>
+          <li [class.ok]="passwordHasDigit">{{ 'auth.passwordRuleDigit' | t }}</li>
+          <li [class.ok]="passwordHasUpper">{{ 'auth.passwordRuleUpper' | t }}</li>
+          <li [class.ok]="passwordHasLower">{{ 'auth.passwordRuleLower' | t }}</li>
+          <li [class.ok]="passwordHasSpecial">{{ 'auth.passwordRuleSpecial' | t }}</li>
+          <li [class.ok]="passwordsMatch">{{ 'auth.passwordRuleMatch' | t }}</li>
+        </ul>
+      </div>
+
       <div class="register-submit">
-        <button class="premium-btn premium-btn-primary" type="submit">{{ 'auth.registerButton' | t }}</button>
+        <button
+          class="premium-btn premium-btn-primary"
+          type="submit"
+          [disabled]="isSubmitting || !passwordMeetsRules || !passwordsMatch"
+        >
+          {{ isSubmitting ? ('auth.registerLoading' | t) : ('auth.registerButton' | t) }}
+        </button>
       </div>
     </form>
+
+    <p class="auth-switch" *ngIf="!registerSucceeded">
+      {{ 'auth.hasAccount' | t }}
+      <a routerLink="/login">{{ 'auth.loginButton' | t }}</a>
+    </p>
   </div>
 </section>

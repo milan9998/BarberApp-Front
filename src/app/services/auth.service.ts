@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, tap } from "rxjs";
+import { API_BASE_URL } from "../config/api.config";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private authUrl = 'http://localhost:5045/auth';
+    private authUrl = `${API_BASE_URL}/auth`;
     private roleKey = 'user_role';
     private owner_company_id = 'owner_company_id';
     private loggedIn = new BehaviorSubject<boolean>(this.checkStorage())

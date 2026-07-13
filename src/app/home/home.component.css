@@ -189,6 +189,12 @@
   max-width: 58rem;
 }
 
+.home-platform-lead {
+  font-size: 1.12rem !important;
+  color: #2a3f63 !important;
+  max-width: 48rem !important;
+}
+
 .section-head p {
   margin-bottom: 1.2rem;
 }
