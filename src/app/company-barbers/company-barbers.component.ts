@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BarberService } from '../services/barber.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { CreateCompanyOwnerComponent } from '../auth/create-company-owner/create-company-owner.component';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { I18nService } from '../services/i18n.service';
 import {
   enrichBarberProfile,
   formatHours,
@@ -20,16 +21,18 @@ import {
   templateUrl: './company-barbers.component.html',
   styleUrl: './company-barbers.component.css'
 })
-export class CompanyBarbersComponent implements OnInit {
+export class CompanyBarbersComponent implements OnInit, OnDestroy {
   check = false;
   selectedAppointment: string | null = null;
   companyId: string | null = null;
   barbers: any[] = [];
+  private rawBarbers: any[] = [];
   haircuts: any[] = [];
   selectedBarberId: string | null = null;
   selectedDate: any = new Date().toISOString().split('T')[0];
   today = '';
   company: any;
+  private rawCompany: any = null;
   profile: ShopProfile | null = null;
   activeGalleryIndex = 0;
   selectedOwner = '';
@@ -46,13 +49,18 @@ export class CompanyBarbersComponent implements OnInit {
   isBooking = false;
   bookingFeedback = '';
   bookingFeedbackIsError = false;
+  companyLoadError = false;
+  barbersLoaded = false;
+  haircutsLoaded = false;
   routeSubscription: Subscription | undefined;
+  private langSub?: Subscription;
   currentEntityId: string | null = null;
 
   constructor(
     private barberService: BarberService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private i18n: I18nService
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +69,10 @@ export class CompanyBarbersComponent implements OnInit {
     });
 
     this.companyId = this.route.snapshot.paramMap.get('id');
+
+    this.langSub = this.i18n.language$.subscribe(() => {
+      this.applyLocalizedContent();
+    });
 
     if (this.companyId) {
       this.authService.checkIfCompanyOwnerExists(this.companyId).subscribe({
@@ -90,49 +102,79 @@ export class CompanyBarbersComponent implements OnInit {
 
     this.barberService.getAllBarbersByCompanyId(this.companyId).subscribe({
       next: (data) => {
-        const companyName = this.company?.companyName ?? '';
-        this.barbers = data.map((barber: any, index: number) => {
-          const enrichment = enrichBarberProfile(companyName || barber.companyName || 'shop', barber.barberName, index);
-          return {
-            ...barber,
-            ...enrichment,
-            hoursLabel: formatHours(barber.individualStartTime, barber.individualEndTime)
-          };
-        });
+        this.rawBarbers = data ?? [];
+        this.barbersLoaded = true;
+        this.applyLocalizedContent();
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error(err);
+        this.rawBarbers = [];
+        this.barbers = [];
+        this.barbersLoaded = true;
+      }
     });
 
     this.barberService.getCompanyDetailsById(this.companyId).subscribe({
       next: (data) => {
-        this.profile = getShopProfile(data.companyName);
-        this.company = {
-          ...data,
-          imageUrl: this.profile.gallery,
-          ...this.profile
-        };
-
-        this.barbers = this.barbers.map((barber: any, index: number) => {
-          const enrichment = enrichBarberProfile(data.companyName, barber.barberName, index);
-          return {
-            ...barber,
-            ...enrichment,
-            hoursLabel: formatHours(barber.individualStartTime, barber.individualEndTime)
-          };
-        });
+        this.rawCompany = data;
+        this.companyLoadError = false;
+        this.applyLocalizedContent();
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error(err);
+        this.companyLoadError = true;
+      }
     });
 
     this.barberService.getAllHaircutsByCompanyId(this.companyId).subscribe({
       next: (data) => {
-        this.haircuts = data;
+        this.haircuts = data ?? [];
+        this.haircutsLoaded = true;
         if (this.haircuts.length > 0) {
           this.selectedHaircut = this.haircuts[0].haircutId;
         }
       },
-      error: (err) => console.log(err)
+      error: (err) => {
+        console.log(err);
+        this.haircuts = [];
+        this.haircutsLoaded = true;
+      }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe();
+    this.langSub?.unsubscribe();
+  }
+
+  private applyLocalizedContent(): void {
+    const lang = this.i18n.language;
+    const companyName = this.rawCompany?.companyName ?? this.company?.companyName ?? 'shop';
+
+    if (this.rawCompany) {
+      this.profile = getShopProfile(this.rawCompany.companyName, lang);
+      this.company = {
+        ...this.rawCompany,
+        imageUrl: this.profile.gallery,
+        ...this.profile
+      };
+    }
+
+    if (this.rawBarbers.length) {
+      this.barbers = this.rawBarbers.map((barber: any, index: number) => {
+        const enrichment = enrichBarberProfile(
+          companyName || barber.companyName || 'shop',
+          barber.barberName,
+          index,
+          lang
+        );
+        return {
+          ...barber,
+          ...enrichment,
+          hoursLabel: formatHours(barber.individualStartTime, barber.individualEndTime)
+        };
+      });
+    }
   }
 
   get selectedBarber(): any | null {
@@ -141,6 +183,30 @@ export class CompanyBarbersComponent implements OnInit {
 
   setGallery(index: number): void {
     this.activeGalleryIndex = index;
+  }
+
+  onGalleryImageError(index: number): void {
+    const images = this.company?.imageUrl;
+    if (!Array.isArray(images) || images.length < 2) {
+      return;
+    }
+    const next = (index + 1) % images.length;
+    if (next !== index) {
+      images[index] = images[next];
+      if (this.activeGalleryIndex === index) {
+        this.activeGalleryIndex = next;
+      }
+    }
+  }
+
+  scrollToSection(sectionId: string): void {
+    const el = document.getElementById(sectionId);
+    if (!el) {
+      return;
+    }
+    const offset = 88;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }
 
   nextGallery(): void {
@@ -180,9 +246,7 @@ export class CompanyBarbersComponent implements OnInit {
     } else {
       this.freeAppointments = [];
     }
-    setTimeout(() => {
-      document.getElementById('booking-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
+    setTimeout(() => this.scrollToSection('booking-panel'), 50);
   }
 
   onPhoneChange(value: string): void {
@@ -210,7 +274,7 @@ export class CompanyBarbersComponent implements OnInit {
       },
       error: (err) => {
         this.freeAppointments = [];
-        this.showBookingError(this.extractError(err) || 'Ne mogu da učitam termine.');
+        this.showBookingError(this.extractError(err) || this.i18n.t('company.loadSlotsFailed'));
       }
     });
   }
@@ -220,15 +284,15 @@ export class CompanyBarbersComponent implements OnInit {
     this.bookingFeedbackIsError = false;
 
     if (!this.selectedAppointment) {
-      this.showBookingError('Izaberite termin.');
+      this.showBookingError(this.i18n.t('company.selectSlot'));
       return;
     }
     if (!this.firstName.trim() || !this.lastName.trim() || !this.email.trim() || !this.phoneNumber.trim()) {
-      this.showBookingError('Popunite ime, prezime, email i telefon.');
+      this.showBookingError(this.i18n.t('company.fillBookingFields'));
       return;
     }
     if (!this.selectedHaircut) {
-      this.showBookingError('Izaberite uslugu.');
+      this.showBookingError(this.i18n.t('company.selectService'));
       return;
     }
     if (!this.selectedBarberId || this.isBooking) {
@@ -249,9 +313,9 @@ export class CompanyBarbersComponent implements OnInit {
       next: (response) => {
         this.isBooking = false;
         this.bookingFeedbackIsError = false;
+        const servicePart = response?.haircutName ? `: ${response.haircutName}` : '';
         this.bookingFeedback =
-          response?.message ||
-          `Uspešno zakazano${response?.haircutName ? ': ' + response.haircutName : ''}. Proverite email za potvrdu.`;
+          `${this.i18n.t('company.bookingSuccess')}${servicePart}. ${this.i18n.t('company.bookingSuccessEmail')}`;
         this.selectedAppointment = null;
         this.loadAppointments();
       },
@@ -269,7 +333,7 @@ export class CompanyBarbersComponent implements OnInit {
 
   private extractError(error: any): string {
     if (error?.status === 0) {
-      return 'API nije dostupan. Proverite da li backend radi.';
+      return this.i18n.t('company.apiUnavailable');
     }
 
     if (error?.error?.errors) {
@@ -279,15 +343,15 @@ export class CompanyBarbersComponent implements OnInit {
         messages.push(...validationErrors[field]);
       }
       if (messages.length) {
-        return messages.join('\n');
+        return messages.map((m: string) => this.i18n.localizeMessage(m)).join('\n');
       }
     }
 
     const detail = error?.error?.detail || error?.error?.title || error?.error?.message;
     if (typeof detail === 'string' && detail.trim()) {
-      return detail;
+      return this.i18n.localizeMessage(detail, 'company.bookingFailed');
     }
 
-    return 'Zakazivanje nije uspelo. Proverite podatke i pokušajte ponovo.';
+    return this.i18n.t('company.bookingFailed');
   }
 }

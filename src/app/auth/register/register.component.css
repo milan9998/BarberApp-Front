@@ -19,7 +19,7 @@
 .form-feedback {
   margin: 0 0 1rem;
   padding: 0.95rem 1rem;
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.95rem;
   line-height: 1.5;
   display: grid;
@@ -27,8 +27,10 @@
 }
 
 .form-feedback strong {
-  font-family: "Fraunces", serif;
+  font-family: "Oswald", sans-serif;
   font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .form-feedback p {
@@ -36,15 +38,15 @@
 }
 
 .form-feedback.error {
-  background: rgba(176, 67, 67, 0.1);
-  color: #8f2f2f;
-  border: 1px solid rgba(176, 67, 67, 0.28);
+  background: rgba(200, 16, 46, 0.12);
+  color: #f3b4bd;
+  border: 1px solid rgba(200, 16, 46, 0.4);
 }
 
 .form-feedback.ok {
-  background: rgba(47, 125, 87, 0.12);
-  color: #1f5f40;
-  border: 1px solid rgba(47, 125, 87, 0.3);
+  background: rgba(47, 125, 87, 0.14);
+  color: #b7e3c8;
+  border: 1px solid rgba(47, 125, 87, 0.35);
 }
 
 .premium-btn:disabled {
@@ -54,31 +56,32 @@
 
 .auth-switch {
   margin: 1rem 0 0;
-  color: #5a7196;
+  color: #9a9a9a;
   font-size: 0.9rem;
 }
 
 .auth-switch a {
-  color: #1d3f74;
+  color: #fff;
   font-weight: 700;
   text-decoration: none;
   margin-left: 0.25rem;
+  border-bottom: 1px solid rgba(200, 16, 46, 0.55);
 }
 
 .password-rules {
   grid-column: 1 / -1;
   margin-top: 0.15rem;
   padding: 0.85rem 1rem;
-  border-radius: 10px;
-  background: rgba(29, 63, 116, 0.06);
-  border: 1px solid rgba(29, 63, 116, 0.12);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .password-rules-title {
   margin: 0 0 0.45rem;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #1d3f74;
+  color: #f2f2f2;
 }
 
 .password-rules ul {
@@ -91,7 +94,7 @@
 
 .password-rules li {
   font-size: 0.86rem;
-  color: #6a7d97;
+  color: #9a9a9a;
   display: flex;
   align-items: center;
   gap: 0.45rem;
@@ -100,11 +103,11 @@
 .password-rules li::before {
   content: "○";
   font-size: 0.75rem;
-  color: #9aa8bc;
+  color: #6f6f6f;
 }
 
 .password-rules li.ok {
-  color: #1f5f40;
+  color: #b7e3c8;
   font-weight: 600;
 }
 

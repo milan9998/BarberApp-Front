@@ -4,6 +4,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { BarberService } from '../services/barber.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { I18nService } from '../services/i18n.service';
 interface DisplayFile {
     file: File;
     name: string;
@@ -25,7 +26,7 @@ companyName: string = '';
   selectedFile: File[] | null = null;
   uploadedFiles: DisplayFile[]=[];
 
-  constructor(private barberService: BarberService) {}
+  constructor(private barberService: BarberService, private i18n: I18nService) {}
   ngOnInit(): void {
     //throw new Error('Method not implemented.');
   }
@@ -40,7 +41,7 @@ companyName: string = '';
 
   onSubmit(): void {
     if (!this.companyName || !this.selectedFile) {
-      alert('Please enter a name and select an image.');
+      alert(this.i18n.t('createCompany.validationAlert'));
       return;
     }
 
@@ -57,11 +58,11 @@ companyName: string = '';
     this.barberService.createCompany(formData).subscribe({
       next: (response) => {
         console.log('Company created:', response);
-        alert('Company successfully created!');
+        alert(this.i18n.t('createCompany.successAlert'));
       },
       error: (error) => {
         console.error('Error creating company:', error);
-        alert('Error creating company.');
+        alert(this.i18n.t('createCompany.errorAlert'));
       }
     });
   }

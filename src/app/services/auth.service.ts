@@ -63,6 +63,10 @@ export class AuthService {
         return this.getRole() === 'CompanyOwner';
     }
 
+    isBarber(): boolean {
+        return this.getRole() === 'Barber';
+    }
+
     setOwnerCompanyId(role: any) {
         localStorage.setItem(this.owner_company_id, role);
     }

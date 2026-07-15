@@ -57,6 +57,13 @@ export class BarberService {
     return this.http.post<any>(`${this.scheduleUrl}/CreateAppointment`, formData)
   }
 
+  getCompanyCrm(companyId: string): Observable<any> {
+    return this.http.get<any>(`${this.scheduleUrl}/company-crm?companyId=${companyId}`);
+  }
+
+  getUsedAppointmentsByBarberId(barberId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.scheduleUrl}/GetAllUsedAppointments?barberId=${barberId}`);
+  }
 
 }
 

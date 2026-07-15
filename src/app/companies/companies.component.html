@@ -5,18 +5,26 @@
     <p>{{ 'companies.subtitle' | t }}</p>
   </header>
 
-  <div *ngIf="companies.length === 0" class="market-loading">
+  <div *ngIf="isLoading" class="market-loading">
     <p>{{ 'companies.loading' | t }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && loadError" class="market-loading">
+    <p>{{ 'companies.loadFailed' | t }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && !loadError && companies.length === 0" class="market-loading">
+    <p>{{ 'companies.empty' | t }}</p>
   </div>
 
   <div *ngIf="isLoggedIn && isAdmin" class="market-admin">
     <a class="premium-btn premium-btn-primary" routerLink="/create-company">+ {{ 'companies.create' | t }}</a>
   </div>
 
-  <div class="market-grid" *ngIf="filteredCompaniesByOwnerId.length > 0 || companies.length > 0">
+  <div class="market-grid" *ngIf="!isLoading && !loadError && companies.length > 0">
     <a
       class="market-card"
-      *ngFor="let company of filteredCompaniesByOwnerId.length ? filteredCompaniesByOwnerId : companies"
+      *ngFor="let company of companies"
       [routerLink]="['/companies', company.companyId]"
       (mouseenter)="onCardEnter(company)"
       (mouseleave)="onCardLeave(company)"
@@ -26,11 +34,13 @@
           *ngIf="company.imageUrl?.length"
           [src]="company.imageUrl[company.currentImageIndex || 0]"
           [alt]="company.companyName"
+          loading="lazy"
           referrerpolicy="no-referrer"
+          (error)="onImageError(company)"
         />
         <div class="market-media-meta">
-          <span>{{ company.tag }}</span>
-          <span>{{ company.priceRange }}</span>
+          <span class="market-tag">{{ company.tag }}</span>
+          <span class="market-price">{{ company.priceRange }}</span>
         </div>
       </div>
       <div class="market-copy">

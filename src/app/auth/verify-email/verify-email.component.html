@@ -1,10 +1,20 @@
 <section class="verify-page">
-  <div class="verify-card" [class.ok]="status === 'success'" [class.bad]="status === 'error'">
+  <div class="verify-card" [class.ok]="status === 'success'" [class.bad]="status !== 'success'">
     <p class="kicker">{{ 'verify.kicker' | t }}</p>
     <h1>{{ status === 'success' ? ('verify.successTitle' | t) : ('verify.errorTitle' | t) }}</h1>
-    <p>{{ message }}</p>
-    <a class="premium-btn premium-btn-primary" routerLink="/login" [queryParams]="{ notice: status === 'success' ? 'verified' : null }">
-      {{ 'verify.goLogin' | t }}
-    </a>
+    <p class="verify-lead">{{ message }}</p>
+
+    <div class="verify-login" *ngIf="status === 'success'">
+      <p class="verify-hint">{{ 'verify.loginHint' | t }}</p>
+      <a class="premium-btn premium-btn-primary" routerLink="/login" [queryParams]="{ notice: 'verified' }">
+        {{ 'verify.goLogin' | t }}
+      </a>
+      <a class="verify-secondary" routerLink="/companies">{{ 'nav.companies' | t }}</a>
+    </div>
+
+    <div class="verify-actions" *ngIf="status !== 'success'">
+      <a class="premium-btn premium-btn-primary" routerLink="/register">{{ 'nav.register' | t }}</a>
+      <a class="verify-secondary" routerLink="/login">{{ 'verify.goLogin' | t }}</a>
+    </div>
   </div>
 </section>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -14,7 +15,10 @@ export class VerifyEmailComponent implements OnInit {
   status: 'success' | 'error' | 'pending' = 'pending';
   message = '';
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private i18n: I18nService
+  ) {}
 
   ngOnInit(): void {
     const status = this.route.snapshot.queryParamMap.get('status');
@@ -26,8 +30,9 @@ export class VerifyEmailComponent implements OnInit {
       this.status = 'error';
     }
 
-    this.message = message || (this.status === 'success'
-      ? 'Email verified successfully.'
-      : 'Email verification failed.');
+    this.message = this.i18n.localizeMessage(
+      message,
+      this.status === 'success' ? 'verify.defaultSuccess' : 'verify.defaultError'
+    );
   }
 }

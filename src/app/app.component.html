@@ -1,27 +1,193 @@
-<header class="topbar">
-  <a class="brand" routerLink="/home" [attr.aria-label]="'brand.name' | t">
+<header class="topbar" [class.menu-open]="mobileMenuOpen">
+  <a class="brand" routerLink="/home" [attr.aria-label]="'brand.name' | t" (click)="closeMobileMenu()">
     <img
       class="brand-logo"
-      src="/logo-barber-control-hq.png?v=5"
+      src="/logo-barber-control-hq.png?v=10"
       alt="Barber Control Headquarters"
-      width="780"
-      height="260"
+      width="612"
+      height="408"
     />
   </a>
 
-  <nav class="nav-links">
-    <a class="nav-button" routerLink="/home">{{ 'nav.home' | t }}</a>
-    <a class="nav-button" routerLink="/companies">{{ 'nav.companies' | t }}</a>
-    <a class="nav-button" routerLink="/about">{{ 'nav.about' | t }}</a>
-    <a class="nav-button" routerLink="/how-it-works">{{ 'nav.how' | t }}</a>
-    <a class="nav-button" routerLink="/services">{{ 'nav.services' | t }}</a>
+  <div class="topbar-actions">
+    <div class="lang-pair" role="group" [attr.aria-label]="'lang.label' | t">
+      <button
+        type="button"
+        class="lang-btn"
+        [class.active]="i18nService.language === 'en'"
+        (click)="setLanguage('en')"
+      >
+        EN
+      </button>
+      <button
+        type="button"
+        class="lang-btn"
+        [class.active]="i18nService.language === 'sr'"
+        (click)="setLanguage('sr')"
+      >
+        SR
+      </button>
+    </div>
+
+    <a class="nav-book desktop-only" routerLink="/companies">{{ 'nav.bookNow' | t }}</a>
+
+    <button
+      type="button"
+      class="menu-toggle mobile-only"
+      (click)="toggleMobileMenu()"
+      [attr.aria-expanded]="mobileMenuOpen"
+      [attr.aria-label]="mobileMenuOpen ? ('nav.closeMenu' | t) : ('nav.openMenu' | t)"
+    >
+      <span class="menu-toggle-bar"></span>
+      <span class="menu-toggle-bar"></span>
+      <span class="menu-toggle-bar"></span>
+    </button>
+  </div>
+
+  <nav class="nav-links desktop-nav">
+    <a class="nav-button" routerLink="/home" routerLinkActive="active">{{ 'nav.home' | t }}</a>
+    <a class="nav-button" routerLink="/companies" routerLinkActive="active">{{ 'nav.companies' | t }}</a>
+    <a class="nav-button" routerLink="/about" routerLinkActive="active">{{ 'nav.about' | t }}</a>
+    <a class="nav-button" routerLink="/how-it-works" routerLinkActive="active">{{ 'nav.how' | t }}</a>
+    <a class="nav-button" routerLink="/services" routerLinkActive="active">{{ 'nav.services' | t }}</a>
     <a *ngIf="!isLoggedIn" class="nav-button" routerLink="/login">{{ 'nav.login' | t }}</a>
-    <a *ngIf="!isLoggedIn" class="nav-button nav-accent" routerLink="/register">{{ 'nav.register' | t }}</a>
-    <button *ngIf="isLoggedIn" class="nav-button nav-accent logout-btn" (click)="logout()">{{ 'nav.logout' | t }}</button>
-    <button class="lang-switch" type="button" (click)="toggleLanguage()">{{ 'lang.switch' | t }}</button>
+    <a *ngIf="!isLoggedIn" class="nav-button" routerLink="/register">{{ 'nav.register' | t }}</a>
+    <button *ngIf="isLoggedIn" class="nav-button logout-btn" type="button" (click)="logout()">{{ 'nav.logout' | t }}</button>
   </nav>
 </header>
 
-<main class="app-shell">
-  <router-outlet></router-outlet>
-</main>
+<div
+  class="mobile-backdrop"
+  *ngIf="mobileMenuOpen"
+  (click)="closeMobileMenu()"
+  aria-hidden="true"
+></div>
+
+<aside class="mobile-drawer" [class.open]="mobileMenuOpen" [attr.aria-hidden]="!mobileMenuOpen">
+  <div class="mobile-drawer-head">
+    <p class="mobile-drawer-kicker">{{ 'nav.menu' | t }}</p>
+    <button type="button" class="mobile-drawer-close" (click)="closeMobileMenu()">{{ 'nav.closeMenu' | t }}</button>
+  </div>
+
+  <div class="lang-pair drawer-lang" role="group" [attr.aria-label]="'lang.label' | t">
+    <button
+      type="button"
+      class="lang-btn"
+      [class.active]="i18nService.language === 'en'"
+      (click)="setLanguage('en')"
+    >
+      EN
+    </button>
+    <button
+      type="button"
+      class="lang-btn"
+      [class.active]="i18nService.language === 'sr'"
+      (click)="setLanguage('sr')"
+    >
+      SR
+    </button>
+  </div>
+
+  <nav class="mobile-drawer-nav">
+    <a routerLink="/home" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.home' | t }}</a>
+    <a routerLink="/companies" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.companies' | t }}</a>
+    <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.about' | t }}</a>
+    <a routerLink="/how-it-works" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.how' | t }}</a>
+    <a routerLink="/services" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.services' | t }}</a>
+
+    <ng-container *ngIf="showStaffPanel">
+      <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.admin' | t }}</a>
+      <a
+        *ngIf="isOwner && ownerCompanyId"
+        [routerLink]="['/owner/crm', ownerCompanyId]"
+        routerLinkActive="active"
+        (click)="closeMobileMenu()"
+      >{{ 'nav.crm' | t }}</a>
+      <a
+        *ngIf="isOwner && ownerCompanyId"
+        [routerLink]="['/companies', ownerCompanyId]"
+        routerLinkActive="active"
+        (click)="closeMobileMenu()"
+      >{{ 'sidebar.myShop' | t }}</a>
+      <a
+        *ngIf="isOwner && ownerCompanyId"
+        [routerLink]="['/create-barber', ownerCompanyId]"
+        routerLinkActive="active"
+        (click)="closeMobileMenu()"
+      >{{ 'company.addBarber' | t }}</a>
+      <a
+        *ngIf="isOwner && ownerCompanyId"
+        [routerLink]="['/create-haircut', ownerCompanyId]"
+        routerLinkActive="active"
+        (click)="closeMobileMenu()"
+      >{{ 'company.addService' | t }}</a>
+    </ng-container>
+
+    <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.login' | t }}</a>
+    <a *ngIf="!isLoggedIn" routerLink="/register" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.register' | t }}</a>
+    <button *ngIf="isLoggedIn" type="button" class="mobile-logout" (click)="logout(); closeMobileMenu()">{{ 'nav.logout' | t }}</button>
+    <a class="mobile-book" routerLink="/companies" (click)="closeMobileMenu()">{{ 'nav.bookNow' | t }}</a>
+  </nav>
+</aside>
+
+<div class="app-frame" [class.with-sidebar]="showStaffPanel">
+  <aside class="staff-sidebar desktop-staff" *ngIf="showStaffPanel">
+    <p class="staff-kicker">{{ 'sidebar.kicker' | t }}</p>
+    <h2 class="staff-title">{{ staffTitleKey | t }}</h2>
+
+    <nav class="staff-nav">
+      <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="active">{{ 'nav.admin' | t }}</a>
+      <a *ngIf="isAdmin" routerLink="/create-company" routerLinkActive="active">{{ 'companies.create' | t }}</a>
+
+      <a
+        *ngIf="isOwner && ownerCompanyId"
+        [routerLink]="['/owner/crm', ownerCompanyId]"
+        routerLinkActive="active"
+      >{{ 'nav.crm' | t }}</a>
+      <a
+        *ngIf="isOwner && ownerCompanyId"
+        [routerLink]="['/companies', ownerCompanyId]"
+        routerLinkActive="active"
+      >{{ 'sidebar.myShop' | t }}</a>
+      <a
+        *ngIf="isOwner && ownerCompanyId"
+        [routerLink]="['/create-barber', ownerCompanyId]"
+        routerLinkActive="active"
+      >{{ 'company.addBarber' | t }}</a>
+      <a
+        *ngIf="isOwner && ownerCompanyId"
+        [routerLink]="['/create-haircut', ownerCompanyId]"
+        routerLinkActive="active"
+      >{{ 'company.addService' | t }}</a>
+
+      <a *ngIf="isBarber" routerLink="/companies" routerLinkActive="active">{{ 'sidebar.schedule' | t }}</a>
+      <a routerLink="/companies" routerLinkActive="active">{{ 'nav.companies' | t }}</a>
+      <a routerLink="/home" routerLinkActive="active">{{ 'nav.home' | t }}</a>
+    </nav>
+  </aside>
+
+  <div class="app-content">
+    <main class="app-shell">
+      <router-outlet></router-outlet>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" routerLink="/home" [attr.aria-label]="'brand.name' | t">
+        <img
+          class="brand-logo footer-logo"
+          src="/logo-barber-control-hq.png?v=10"
+          alt="Barber Control Headquarters"
+          width="612"
+          height="408"
+        />
+      </a>
+      <p class="footer-copy">{{ 'footer.tagline' | t }}</p>
+      <nav class="footer-nav">
+        <a routerLink="/companies">{{ 'nav.companies' | t }}</a>
+        <a routerLink="/about">{{ 'nav.about' | t }}</a>
+        <a routerLink="/how-it-works">{{ 'nav.how' | t }}</a>
+        <a routerLink="/services">{{ 'nav.services' | t }}</a>
+      </nav>
+    </footer>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<section class="shop-page" *ngIf="company">
+<section class="shop-page" *ngIf="company; else shopStatus">
   <section class="shop-hero" [style.backgroundImage]="'url(' + company.imageUrl[activeGalleryIndex] + ')'">
     <div class="shop-hero-veil"></div>
     <div class="shop-hero-copy">
@@ -11,8 +11,12 @@
         <span>{{ company.hours }}</span>
       </div>
       <div class="shop-hero-actions">
-        <a class="premium-btn premium-btn-primary" href="#team">{{ 'company.meetTeam' | t }}</a>
-        <a class="shop-text-link" href="#story">{{ 'company.readStory' | t }}</a>
+        <button type="button" class="premium-btn premium-btn-primary" (click)="scrollToSection('team')">
+          {{ 'company.meetTeam' | t }}
+        </button>
+        <button type="button" class="shop-text-link" (click)="scrollToSection('story')">
+          {{ 'company.readStory' | t }}
+        </button>
       </div>
     </div>
   </section>
@@ -27,7 +31,12 @@
           [class.active]="i === activeGalleryIndex"
           (click)="setGallery(i)"
         >
-          <img [src]="image" [alt]="company.companyName + ' gallery ' + (i + 1)" />
+          <img
+            [src]="image"
+            [alt]="company.companyName + ' gallery ' + (i + 1)"
+            referrerpolicy="no-referrer"
+            (error)="onGalleryImageError(i)"
+          />
         </button>
       </div>
       <button type="button" class="gallery-nav" (click)="nextGallery()" aria-label="Next">›</button>
@@ -99,12 +108,13 @@
           <p>{{ 'company.teamText' | t }}</p>
         </div>
         <div class="action-row" *ngIf="isLoggedIn && (isAdmin || isOwner)">
+          <a *ngIf="isOwner" class="premium-btn secondary-btn" [routerLink]="['/owner/crm', companyId]">{{ 'nav.crm' | t }}</a>
           <a class="premium-btn secondary-btn" [routerLink]="['/create-barber', companyId]">{{ 'company.addBarber' | t }}</a>
           <a class="premium-btn premium-btn-primary" [routerLink]="['/create-haircut', companyId]">{{ 'company.addService' | t }}</a>
         </div>
       </div>
 
-      <div class="team-grid">
+      <div class="team-grid" *ngIf="barbers.length; else teamState">
         <article
           class="barber-card"
           *ngFor="let barber of barbers"
@@ -137,9 +147,13 @@
           </div>
         </article>
       </div>
+      <ng-template #teamState>
+        <p class="shop-empty" *ngIf="!barbersLoaded">{{ 'company.loading' | t }}</p>
+        <p class="shop-empty" *ngIf="barbersLoaded">{{ 'company.noBarbers' | t }}</p>
+      </ng-template>
     </section>
 
-    <section class="shop-section" *ngIf="haircuts.length">
+    <section class="shop-section" *ngIf="haircuts.length; else menuState">
       <p class="section-kicker">{{ 'company.packages' | t }}</p>
       <h2>{{ 'company.menuTitle' | t }}</h2>
       <p>{{ 'company.menuText' | t }}</p>
@@ -153,6 +167,14 @@
         </article>
       </div>
     </section>
+    <ng-template #menuState>
+      <section class="shop-section">
+        <p class="section-kicker">{{ 'company.packages' | t }}</p>
+        <h2>{{ 'company.menuTitle' | t }}</h2>
+        <p class="shop-empty" *ngIf="!haircutsLoaded">{{ 'company.loading' | t }}</p>
+        <p class="shop-empty" *ngIf="haircutsLoaded">{{ 'company.noServices' | t }}</p>
+      </section>
+    </ng-template>
 
     <section class="shop-section booking-panel" id="booking-panel" *ngIf="selectedBarberId && selectedBarber as barber">
       <div class="booking-head">
@@ -264,3 +286,13 @@
     </section>
   </div>
 </section>
+
+<ng-template #shopStatus>
+  <section class="shop-status">
+    <p *ngIf="companyLoadError; else loadingShop">{{ 'company.loadFailed' | t }}</p>
+    <ng-template #loadingShop>
+      <p>{{ 'company.loading' | t }}</p>
+    </ng-template>
+    <a class="premium-btn premium-btn-primary" routerLink="/companies">{{ 'nav.companies' | t }}</a>
+  </section>
+</ng-template>

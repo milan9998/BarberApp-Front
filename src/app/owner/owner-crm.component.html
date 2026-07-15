@@ -1,0 +1,116 @@
+<section class="crm-page">
+  <header class="crm-hero">
+    <div>
+      <p class="crm-kicker">{{ 'crm.kicker' | t }}</p>
+      <h1>{{ 'crm.title' | t }}</h1>
+      <p class="crm-sub">
+        <span *ngIf="companyName">{{ companyName }} · </span>{{ 'crm.subtitle' | t }}
+      </p>
+    </div>
+    <div class="crm-hero-actions" *ngIf="companyId">
+      <a class="premium-btn premium-btn-primary" [routerLink]="['/companies', companyId]">{{ 'crm.openShop' | t }}</a>
+      <a class="crm-link" [routerLink]="['/create-barber', companyId]">{{ 'company.addBarber' | t }}</a>
+    </div>
+  </header>
+
+  <p class="crm-status" *ngIf="isLoading">{{ 'crm.loading' | t }}</p>
+  <p class="crm-status" *ngIf="!isLoading && loadError">{{ 'crm.loadFailed' | t }}</p>
+
+  <ng-container *ngIf="!isLoading && !loadError">
+    <div class="crm-kpis">
+      <article class="crm-kpi">
+        <span>{{ 'crm.kpiTotal' | t }}</span>
+        <strong>{{ totalAppointments }}</strong>
+      </article>
+      <article class="crm-kpi accent">
+        <span>{{ 'crm.kpiUpcoming' | t }}</span>
+        <strong>{{ upcomingAppointments }}</strong>
+      </article>
+      <article class="crm-kpi">
+        <span>{{ 'crm.kpiDone' | t }}</span>
+        <strong>{{ completedAppointments }}</strong>
+      </article>
+      <article class="crm-kpi">
+        <span>{{ 'crm.kpiBarbers' | t }}</span>
+        <strong>{{ barberCount }}</strong>
+      </article>
+    </div>
+
+    <div class="crm-grid">
+      <section class="crm-panel">
+        <header>
+          <h2>{{ 'crm.byBarber' | t }}</h2>
+          <p>{{ 'crm.byBarberHint' | t }}</p>
+        </header>
+
+        <p class="crm-empty" *ngIf="!perBarber.length">{{ 'crm.noBarbers' | t }}</p>
+
+        <ul class="crm-bars" *ngIf="perBarber.length">
+          <li *ngFor="let barber of perBarber; let i = index">
+            <div class="crm-bar-meta">
+              <strong>{{ barber.barberName }}</strong>
+              <span>{{ barber.total }} {{ 'crm.bookings' | t }}</span>
+            </div>
+            <div class="crm-bar-track">
+              <div
+                class="crm-bar-fill"
+                [style.width]="barWidth(barber.total, maxBarberTotal)"
+                [style.animationDelay]="i * 80 + 'ms'"
+              ></div>
+            </div>
+            <div class="crm-bar-split">
+              <em>{{ barber.upcoming }} {{ 'crm.upcomingShort' | t }}</em>
+              <em>{{ barber.completed }} {{ 'crm.doneShort' | t }}</em>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="crm-panel">
+        <header>
+          <h2>{{ 'crm.byMonth' | t }}</h2>
+          <p>{{ 'crm.byMonthHint' | t }}</p>
+        </header>
+        <div class="crm-month-chart">
+          <div class="crm-month-col" *ngFor="let month of byMonth; let i = index">
+            <div class="crm-month-col-track">
+              <div
+                class="crm-month-col-fill"
+                [style.height]="barWidth(month.count, maxMonthCount)"
+                [style.animationDelay]="i * 70 + 'ms'"
+              ></div>
+            </div>
+            <strong>{{ month.count }}</strong>
+            <span>{{ monthLabel(month) }}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="crm-panel crm-table-panel">
+      <header>
+        <h2>{{ 'crm.recent' | t }}</h2>
+        <p>{{ 'crm.recentHint' | t }}</p>
+      </header>
+
+      <p class="crm-empty" *ngIf="!recent.length">{{ 'crm.noBookings' | t }}</p>
+
+      <div class="crm-table" *ngIf="recent.length">
+        <div class="crm-table-head">
+          <span>{{ 'crm.colWhen' | t }}</span>
+          <span>{{ 'crm.colBarber' | t }}</span>
+          <span>{{ 'crm.colService' | t }}</span>
+          <span>{{ 'crm.colStatus' | t }}</span>
+        </div>
+        <div class="crm-table-row" *ngFor="let row of recent">
+          <span>{{ row.time | date: 'dd.MM.yyyy HH:mm' }}</span>
+          <span>{{ row.barberName }}</span>
+          <span>{{ row.haircutName || '—' }}</span>
+          <span [class.up]="row.isUpcoming" [class.done]="!row.isUpcoming">
+            {{ row.isUpcoming ? ('crm.statusUpcoming' | t) : ('crm.statusDone' | t) }}
+          </span>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</section>

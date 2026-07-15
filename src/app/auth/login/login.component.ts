@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-login',
@@ -22,17 +23,18 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private i18n: I18nService
   ) {}
 
   ngOnInit(): void {
     const notice = this.route.snapshot.queryParamMap.get('notice');
     if (notice === 'verify') {
       this.feedbackIsError = false;
-      this.feedback = 'Nalog je kreiran. Proverite email i kliknite na verifikacioni link pre prijave.';
+      this.feedback = this.i18n.t('auth.loginNoticeVerify');
     } else if (notice === 'verified') {
       this.feedbackIsError = false;
-      this.feedback = 'Email je uspešno verifikovan. Sada se možete prijaviti.';
+      this.feedback = this.i18n.t('auth.loginNoticeVerified');
     }
   }
 
@@ -41,7 +43,7 @@ export class LoginComponent implements OnInit {
     this.feedbackIsError = false;
 
     if (!this.email.trim() || !this.password) {
-      this.showError('Unesite email i lozinku.');
+      this.showError(this.i18n.t('auth.enterEmailPassword'));
       return;
     }
 
@@ -62,7 +64,14 @@ export class LoginComponent implements OnInit {
         } else if (response?.companyId) {
           this.authService.setOwnerCompanyId(response.companyId);
         }
-        this.router.navigate(['/home']);
+        const ownerCompany = response?.companyIds?.[0] || response?.companyId;
+        this.router.navigate(
+          response?.role === 'Admin'
+            ? ['/admin']
+            : response?.role === 'CompanyOwner' && ownerCompany
+              ? ['/owner/crm', ownerCompany]
+              : ['/home']
+        );
       },
       error: (error: HttpErrorResponse) => {
         this.isSubmitting = false;
@@ -78,7 +87,7 @@ export class LoginComponent implements OnInit {
 
   private extractError(error: HttpErrorResponse): string {
     if (error.status === 0) {
-      return 'API nije dostupan. Proverite da li backend radi.';
+      return this.i18n.t('auth.apiUnavailable');
     }
 
     if (error.error?.errors) {
@@ -88,15 +97,15 @@ export class LoginComponent implements OnInit {
         messages.push(...validationErrors[field]);
       }
       if (messages.length) {
-        return messages.join('\n');
+        return messages.map((m) => this.i18n.localizeMessage(m)).join('\n');
       }
     }
 
     const detail = error.error?.detail || error.error?.title || error.error?.message;
     if (typeof detail === 'string' && detail.trim()) {
-      return detail;
+      return this.i18n.localizeMessage(detail, 'auth.loginFailed');
     }
 
-    return 'Prijava nije uspela. Proverite podatke.';
+    return this.i18n.t('auth.loginFailed');
   }
 }

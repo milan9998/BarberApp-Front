@@ -32,8 +32,40 @@ const SHOP_GALLERY = [
   'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1536520002442-39764a41e987?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?auto=format&fit=crop&w=1600&q=80',
-  'https://images.unsplash.com/photo-1512690459411-b9245aed614b?auto=format&fit=crop&w=1600&q=80'
+  'https://images.unsplash.com/photo-1512690459411-b9245aed614b?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1517832606299-7ae9b720a186?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1559599101-f09722fb4948?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1600&q=80'
 ] as const;
+
+const SHOP_HERO_INDEX: Record<string, number> = {
+  'Truefitt & Hill': 0,
+  'Schorem Barbier': 1,
+  'Pall Mall Barbers': 2,
+  'Blind Barber': 3,
+  'Ruffians Shoreditch': 4,
+  'Murdock London': 5,
+  'Fellow Barber': 6,
+  'Persons of Interest': 7,
+  'Ludlow Blunt': 8,
+  'The Art of Shaving': 9,
+  'Barber Barber Manchester': 10,
+  'Pankhurst London': 11,
+  'Nomad Barber': 12,
+  'Scissors & Scotch': 13,
+  'Boardroom Styling Lounge': 14,
+  'Grooming Lounge': 15,
+  "Hawleywood's Barbershop": 16,
+  'Victory Barber & Brand': 17,
+  'Bolt Barbers': 18,
+  "Sweeney Todd's Barber Shop": 19
+};
 
 const BARBER_PORTRAITS = [
   'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
@@ -81,22 +113,27 @@ function seedFrom(text: string): number {
   return Array.from(text).reduce((sum, char) => sum + char.charCodeAt(0), 0);
 }
 
-function pickGallery(seed: number): string[] {
-  const start = seed % SHOP_GALLERY.length;
+function pickGallery(seed: number, shopName?: string): string[] {
+  const hero =
+    shopName && shopName in SHOP_HERO_INDEX
+      ? SHOP_HERO_INDEX[shopName]
+      : seed % SHOP_GALLERY.length;
+  const len = SHOP_GALLERY.length;
   return [
-    SHOP_GALLERY[start],
-    SHOP_GALLERY[(start + 2) % SHOP_GALLERY.length],
-    SHOP_GALLERY[(start + 4) % SHOP_GALLERY.length],
-    SHOP_GALLERY[(start + 6) % SHOP_GALLERY.length]
+    SHOP_GALLERY[hero % len],
+    SHOP_GALLERY[(hero + 5) % len],
+    SHOP_GALLERY[(hero + 11) % len],
+    SHOP_GALLERY[(hero + 17) % len]
   ];
 }
 
 function profile(
   partial: Omit<ShopProfile, 'gallery'> & { gallerySeed: string }
 ): ShopProfile {
+  const { gallerySeed, ...rest } = partial;
   return {
-    ...partial,
-    gallery: pickGallery(seedFrom(partial.gallerySeed))
+    ...rest,
+    gallery: pickGallery(seedFrom(gallerySeed), gallerySeed)
   };
 }
 
@@ -108,7 +145,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Heritage luxury',
     founded: 'Est. 1805',
     hours: 'Mon–Sat 09:00–19:00 · Sun closed',
-    priceRange: '$$$ · Signature experience',
+    priceRange: '$85–$165',
     specialties: ['Royal wet shave', 'Classic gentleman cut', 'Beard refining', 'Scalp treatment'],
     shortDescription:
       'A legendary grooming house with royal heritage, ceremonial wet shaves, and unhurried chair craft.',
@@ -124,7 +161,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Old-school icon',
     founded: 'Cult classic',
     hours: 'Tue–Sat 10:00–18:00 · Appointment preferred',
-    priceRange: '$$ · High-demand craft',
+    priceRange: '$45–$90',
     specialties: ['Hard part fades', 'Rockabilly cuts', 'Beard contour', 'Traditional clipper work'],
     shortDescription:
       'A cult barbershop known worldwide for old-school craft, sharp contours, and uncompromising style.',
@@ -140,7 +177,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Award-winning',
     founded: 'Multi-award London brand',
     hours: 'Mon–Fri 08:00–20:00 · Sat 09:00–18:00',
-    priceRange: '$$$ · Business-class grooming',
+    priceRange: '$40–$75',
     specialties: ['Executive cut', 'Beard architecture', 'Same-day polish', 'Consultation-first styling'],
     shortDescription:
       'Award-winning London barbers with premium appointments, beard care, and business-ready grooming.',
@@ -156,7 +193,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Lifestyle grooming',
     founded: 'NYC lifestyle brand',
     hours: 'Daily 10:00–20:00 · Extended evenings',
-    priceRange: '$$–$$$ · Culture + craft',
+    priceRange: '$55–$105',
     specialties: ['Modern classic cut', 'Lifestyle finish', 'Beard tidy', 'Event-ready grooming'],
     shortDescription:
       'A modern grooming destination blending barbershop culture, nightlife energy, and polished hospitality.',
@@ -172,7 +209,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Contemporary premium',
     founded: 'Design-led London house',
     hours: 'Mon–Sat 09:00–19:00 · Sun by request',
-    priceRange: '$$$ · Design + detail',
+    priceRange: '$55–$110',
     specialties: ['Precision scissor cut', 'Soft fade', 'Style mapping', 'Premium product finish'],
     shortDescription:
       'A contemporary barbershop experience built around premium design, consultation, and precision cuts.',
@@ -188,7 +225,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'British grooming',
     founded: 'Fragrance-led grooming house',
     hours: 'Mon–Sat 10:00–19:00',
-    priceRange: '$$$ · Luxury grooming retail',
+    priceRange: '$70–$140',
     specialties: ['Signature cut', 'Scented shave ritual', 'Skincare add-ons', 'Retail consultation'],
     shortDescription:
       'A refined destination known for luxury barber services, fragrance, skincare, and polished retail presentation.',
@@ -204,7 +241,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Modern classic',
     founded: 'NYC modern classic',
     hours: 'Daily 09:00–20:00',
-    priceRange: '$$ · Accessible premium',
+    priceRange: '$50–$95',
     specialties: ['Clean American classic', 'Beard maintain', 'Quick polish', 'Repeatable weekly cut'],
     shortDescription:
       'A recognizable urban barber brand with accessible premium cuts, strong interiors, and polished booking.',
@@ -220,7 +257,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Brooklyn style',
     founded: 'Neighborhood editorial shop',
     hours: 'Tue–Sun 11:00–19:00',
-    priceRange: '$$ · Local cult favorite',
+    priceRange: '$55–$110',
     specialties: ['Textured crops', 'Natural finish', 'Beard line art', 'Creative consult'],
     shortDescription:
       'Neighborhood barbershop identity with an editorial feel, modern grooming, and authentic local character.',
@@ -236,7 +273,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Vintage luxury',
     founded: 'Old-world inspired house',
     hours: 'Mon–Sat 10:00–19:00',
-    priceRange: '$$$ · Elevated classic',
+    priceRange: '$70–$135',
     specialties: ['Vintage silhouette', 'Straight-razor detail', 'Scalp massage', 'Formal finish'],
     shortDescription:
       'Classic grooming atmosphere inspired by old-world shops, detailed service, and elevated visual identity.',
@@ -252,7 +289,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Shaving specialist',
     founded: 'Wet-shave authority',
     hours: 'Mon–Sat 10:00–19:00 · Sun select locations',
-    priceRange: '$$$ · Ritual-led grooming',
+    priceRange: '$65–$130',
     specialties: ['Hot towel shave', 'Beard therapy', 'Pre-shave ritual', 'Product education'],
     shortDescription:
       'Premium grooming concept centered on wet shaving, beard care, product discovery, and service consistency.',
@@ -268,7 +305,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'UK barber culture',
     founded: 'Northern UK powerhouse',
     hours: 'Mon–Sat 09:00–18:30',
-    priceRange: '$$ · Strong craft value',
+    priceRange: '$30–$60',
     specialties: ['British fade', 'Beard reshape', 'Match-day polish', 'Walk-in energy + booking'],
     shortDescription:
       'Bold British barber brand with traditional craft, strong masculine design, and professional grooming services.',
@@ -284,7 +321,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Mayfair grooming',
     founded: 'Mayfair gentleman house',
     hours: 'Mon–Sat 09:00–18:00 · Private slots available',
-    priceRange: '$$$$ · Ultra discreet luxury',
+    priceRange: '$75–$150',
     specialties: ['Discreet executive cut', 'Private shave', 'Style continuity', 'Concierge pacing'],
     shortDescription:
       'High-end gentleman grooming designed for luxury clients, sharp details, and sophisticated presentation.',
@@ -300,7 +337,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Global barber story',
     founded: 'Travel-born craft brand',
     hours: 'Tue–Sat 10:00–19:00',
-    priceRange: '$$–$$$ · Story-driven craft',
+    priceRange: '$40–$80',
     specialties: ['Cross-cultural techniques', 'Education-led cut', 'Travel-ready styles', 'Documentary craft'],
     shortDescription:
       'Internationally recognized concept built around travel, craft education, and visual storytelling.',
@@ -316,7 +353,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Barber lounge',
     founded: 'Hospitality-first grooming club',
     hours: 'Daily 09:00–21:00 · Lounge hours vary',
-    priceRange: '$$$ · Membership lifestyle',
+    priceRange: '$45–$95',
     specialties: ['Lounge cut', 'Hosted wait experience', 'Beard + whiskey pairing vibe', 'Membership cadence'],
     shortDescription:
       'Membership-style grooming lounge combining barber services, hospitality, and premium lifestyle experience.',
@@ -332,7 +369,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Executive grooming',
     founded: 'Corporate grooming lounge',
     hours: 'Mon–Fri 07:30–19:00 · Sat limited',
-    priceRange: '$$$ · Boardroom ready',
+    priceRange: '$90–$180',
     specialties: ['Executive taper', 'Camera-ready finish', 'Quick turnaround', 'Travel grooming kits'],
     shortDescription:
       'Professional men’s grooming focused on business clients, comfort, consistency, and upscale service flow.',
@@ -348,7 +385,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Full-service grooming',
     founded: 'Full-menu grooming destination',
     hours: 'Mon–Sat 09:00–20:00 · Sun 11:00–17:00',
-    priceRange: '$$$ · Complete grooming menu',
+    priceRange: '$60–$120',
     specialties: ['Haircut + shave combo', 'Skincare add-on', 'Beard restoration', 'Occasion grooming'],
     shortDescription:
       'Premium lounge with haircuts, shaves, skincare, and a polished experience for modern professionals.',
@@ -364,7 +401,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Retro classic',
     founded: 'Retro-Americana brand',
     hours: 'Tue–Sat 09:00–18:00',
-    priceRange: '$$ · Personality-rich classic',
+    priceRange: '$35–$70',
     specialties: ['Flat top & classic cuts', 'Straight-razor neck', 'Pomade finish', 'Father-son appointments'],
     shortDescription:
       'Vintage-inspired brand with strong personality, classic Americana aesthetics, and traditional services.',
@@ -380,7 +417,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Craft grooming',
     founded: 'Product-driven craft brand',
     hours: 'Mon–Sat 10:00–18:00',
-    priceRange: '$$–$$$ · Craft + product',
+    priceRange: '$40–$85',
     specialties: ['Product-led finish', 'Scissor craft', 'Beard oil ritual', 'Brand education'],
     shortDescription:
       'Barber brand with product-driven identity, quality cuts, and premium lifestyle positioning.',
@@ -396,7 +433,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Urban cuts',
     founded: 'LA speed + style',
     hours: 'Daily 10:00–20:00',
-    priceRange: '$$ · Fast premium',
+    priceRange: '$25–$55',
     specialties: ['City fade', 'Shape-up', 'Beard align', 'Express lunch slots'],
     shortDescription:
       'Modern city concept with fast booking, strong brand energy, and approachable premium grooming.',
@@ -412,7 +449,7 @@ export const SHOP_PROFILES: Record<string, ShopProfile> = {
     tag: 'Traditional shop',
     founded: 'Traditional LA classic',
     hours: 'Tue–Sat 09:00–18:00',
-    priceRange: '$–$$ · Honest classic value',
+    priceRange: '$35–$70',
     specialties: ['Traditional cut', 'Neck shave', 'Simple beard trim', 'No-nonsense service'],
     shortDescription:
       'Classic barber identity built around traditional cuts, nostalgic atmosphere, and straightforward service value.',
@@ -429,7 +466,7 @@ export function getDemoGalleryForCompany(companyName: string): string[] {
   return getShopProfile(companyName).gallery;
 }
 
-export function getShopProfile(companyName: string): ShopProfile {
+export function getShopProfile(companyName: string, _lang?: string): ShopProfile {
   if (SHOP_PROFILES[companyName]) {
     return SHOP_PROFILES[companyName];
   }
@@ -441,7 +478,7 @@ export function getShopProfile(companyName: string): ShopProfile {
     tag: 'Premium booking',
     founded: 'Marketplace partner',
     hours: 'Mon–Sat 09:00–19:00',
-    priceRange: '$$ · Premium booking',
+    priceRange: '$40–$80',
     specialties: ['Signature cut', 'Beard care', 'Hot towel finish', 'Style consult'],
     shortDescription:
       'A curated barbershop profile with online booking, premium services, and a modern customer experience.',
@@ -455,7 +492,8 @@ export function getShopProfile(companyName: string): ShopProfile {
 export function enrichBarberProfile(
   companyName: string,
   barberName: string,
-  index: number
+  index: number,
+  _lang?: string
 ): BarberProfileEnrichment {
   const seed = seedFrom(`${companyName}:${barberName}:${index}`);
   return {

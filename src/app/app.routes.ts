@@ -14,6 +14,8 @@ import { AboutComponent } from './pages/about/about.component';
 import { HowItWorksComponent } from './pages/how-it-works/how-it-works.component';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 import { PlatformServicesComponent } from './pages/platform-services/platform-services.component';
+import { AdminPanelComponent } from './admin/admin-panel.component';
+import { OwnerCrmComponent } from './owner/owner-crm.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,6 +23,8 @@ export const routes: Routes = [
     { path: 'about', component: AboutComponent },
     { path: 'how-it-works', component: HowItWorksComponent },
     { path: 'services', component: PlatformServicesComponent },
+    { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard] },
+    { path: 'owner/crm/:companyId', component: OwnerCrmComponent, canActivate: [OwnerGuard] },
     { path: 'companies', component: CompaniesComponent },
     { path: 'companies/:id', component: CompanyBarbersComponent },
     { path: 'create-company', component: CreateCompanyComponent, canActivate: [AdminGuard] },

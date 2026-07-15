@@ -17,8 +17,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(8, 14, 28, 0.2) 0%, rgba(8, 14, 28, 0.55) 48%, rgba(8, 14, 28, 0.9) 100%),
-    linear-gradient(90deg, rgba(8, 14, 28, 0.75), rgba(8, 14, 28, 0.15) 70%);
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.55) 48%, rgba(0, 0, 0, 0.9) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15) 70%);
 }
 
 .shop-hero-copy {
@@ -28,7 +28,7 @@
   width: 100%;
   margin: 0 auto;
   padding: 3.5rem 1.4rem 2.6rem;
-  color: #f3f7ff;
+  color: #f2f2f2;
 }
 
 .shop-kicker,
@@ -39,16 +39,16 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #9eb6dc;
+  color: #cfcfcf;
 }
 
 .section-kicker {
-  color: #3d6aa8;
+  color: #c8102e;
 }
 
 .shop-hero-copy h1 {
   margin: 0;
-  font-family: "Fraunces", serif;
+  font-family: "Oswald", sans-serif;
   font-size: clamp(2.2rem, 5vw, 3.8rem);
   letter-spacing: -0.03em;
   line-height: 1.05;
@@ -58,7 +58,7 @@
 .shop-lead {
   margin: 1rem 0 0;
   max-width: 38rem;
-  color: #d5e1f5;
+  color: #d8d8d8;
   line-height: 1.65;
   font-size: 1.05rem;
 }
@@ -68,7 +68,7 @@
   flex-wrap: wrap;
   gap: 0.75rem 1.25rem;
   margin-top: 1.1rem;
-  color: #b7c8e4;
+  color: #cfcfcf;
   font-size: 0.9rem;
 }
 
@@ -81,11 +81,20 @@
 }
 
 .shop-text-link {
-  color: #edf3ff;
+  color: #f2f2f2;
   text-decoration: none;
   font-weight: 700;
-  border-bottom: 1px solid rgba(237, 243, 255, 0.4);
-  padding-bottom: 0.1rem;
+  border: 0;
+  border-bottom: 1px solid rgba(242, 242, 242, 0.4);
+  padding: 0 0 0.1rem;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.shop-text-link:hover {
+  border-bottom-color: #c8102e;
 }
 
 .shop-body {
@@ -94,6 +103,27 @@
   padding: 2rem 1.4rem 3.5rem;
   display: grid;
   gap: 2.4rem;
+}
+
+#team,
+#story,
+#booking-panel {
+  scroll-margin-top: 96px;
+}
+
+.shop-empty,
+.shop-status {
+  color: #d8d8d8;
+  line-height: 1.6;
+}
+
+.shop-status {
+  max-width: 640px;
+  margin: 4rem auto;
+  padding: 0 1.4rem;
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
 }
 
 .gallery-rail {
@@ -138,24 +168,24 @@
 .gallery-nav {
   width: 2.2rem;
   height: 2.2rem;
-  border: 1px solid rgba(36, 68, 122, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   background: rgba(255, 255, 255, 0.9);
-  color: #1d3f74;
+  color: #c8102e;
   font-size: 1.3rem;
   cursor: pointer;
 }
 
 .shop-section h2 {
   margin: 0 0 0.8rem;
-  font-family: "Fraunces", serif;
+  font-family: "Oswald", sans-serif;
   font-size: clamp(1.6rem, 3vw, 2.15rem);
-  color: #14233f;
+  color: #ffffff;
   letter-spacing: -0.02em;
 }
 
 .shop-section p {
   margin: 0 0 0.9rem;
-  color: #4a6085;
+  color: #d4d4d4;
   line-height: 1.75;
   max-width: 46rem;
 }
@@ -170,8 +200,8 @@
   display: grid;
   gap: 1.1rem;
   padding: 1.2rem 0;
-  border-top: 1px solid rgba(36, 68, 122, 0.16);
-  border-bottom: 1px solid rgba(36, 68, 122, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
   align-content: start;
 }
 
@@ -182,12 +212,12 @@
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #3d6aa8;
+  color: #c8102e;
 }
 
 .info-panel span,
 .info-panel li {
-  color: #45597c;
+  color: #e0e0e0;
   line-height: 1.55;
 }
 
@@ -229,7 +259,7 @@
   grid-template-columns: 0.9fr 1.2fr;
   gap: 0;
   overflow: hidden;
-  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
   cursor: pointer;
   transition: transform 0.3s ease, border-color 0.3s ease;
   background: transparent;
@@ -238,7 +268,7 @@
 .barber-card:hover,
 .barber-card.selected {
   transform: translateY(-3px);
-  border-top-color: #2a5290;
+  border-top-color: #c8102e;
 }
 
 .barber-photo-wrap {
@@ -272,14 +302,14 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #3d6aa8;
+  color: #c8102e;
 }
 
 .barber-copy h3 {
   margin: 0;
-  font-family: "Fraunces", serif;
+  font-family: "Oswald", sans-serif;
   font-size: 1.45rem;
-  color: #14233f;
+  color: #ffffff;
 }
 
 .barber-bio {
@@ -297,7 +327,7 @@
 
 .barber-tags span {
   font-size: 0.74rem;
-  color: #2a5290;
+  color: #c8102e;
   border-bottom: 1px solid rgba(42, 82, 144, 0.28);
   padding-bottom: 0.05rem;
 }
@@ -306,7 +336,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
-  color: #6a7f9f;
+  color: #d6d6d6;
   font-size: 0.82rem;
   margin-top: 0.2rem;
 }
@@ -316,11 +346,11 @@
   width: fit-content;
   border: 0;
   background: transparent;
-  color: #1d3f74;
+  color: #c8102e;
   font-weight: 700;
   cursor: pointer;
   padding: 0;
-  border-bottom: 1px solid rgba(29, 63, 116, 0.35);
+  border-bottom: 1px solid rgba(200, 16, 46, 0.35);
 }
 
 .menu-grid {
@@ -335,31 +365,31 @@
   gap: 1rem;
   align-items: baseline;
   padding: 0.95rem 0;
-  border-top: 1px solid rgba(36, 68, 122, 0.14);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .menu-grid h3 {
   margin: 0;
   font-family: "Sora", sans-serif;
   font-size: 1rem;
-  color: #173056;
+  color: #ffffff;
 }
 
 .menu-grid span {
-  color: #6a7f9f;
+  color: #d4d4d4;
   font-size: 0.85rem;
 }
 
 .menu-grid strong {
-  font-family: "Fraunces", serif;
+  font-family: "Oswald", sans-serif;
   font-size: 1.2rem;
-  color: #173056;
+  color: #ffffff;
   white-space: nowrap;
 }
 
 .booking-panel {
   padding-top: 1.4rem;
-  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
   display: grid;
   gap: 0.9rem;
 }
@@ -382,10 +412,12 @@
 
 .booking-head p {
   margin: 0;
+  color: #e2e2e2;
 }
 
 .date-input {
   max-width: 280px;
+  color-scheme: dark;
 }
 
 .appointments-grid {
@@ -395,37 +427,43 @@
 }
 
 .appointment-card {
-  border: 1px solid rgba(36, 68, 122, 0.18);
-  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
   padding: 0.85rem 0.7rem;
   text-align: left;
   cursor: pointer;
   display: grid;
   gap: 0.2rem;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  color: #f2f2f2;
+}
+
+.appointment-card:hover {
+  border-color: rgba(200, 16, 46, 0.65);
+  background: rgba(200, 16, 46, 0.1);
 }
 
 .appointment-card strong {
-  font-family: "Fraunces", serif;
+  font-family: "Oswald", sans-serif;
   font-size: 1.25rem;
-  color: #14233f;
+  color: #ffffff;
 }
 
 .appointment-card span,
 .appointment-card em {
   font-style: normal;
-  color: #5a7196;
+  color: #e0e0e0;
   font-size: 0.8rem;
 }
 
 .appointment-card.selected {
-  border-color: #2a5290;
-  background: rgba(42, 82, 144, 0.08);
+  border-color: #c8102e;
+  background: rgba(200, 16, 46, 0.18);
 }
 
 .packages-container {
   max-width: 100%;
-  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
   padding-top: 0.8rem;
 }
 
@@ -451,18 +489,18 @@
 
 .type {
   font-weight: 700;
-  color: #173056;
+  color: #ffffff;
 }
 
 .duration {
   font-size: 0.82rem;
-  color: #6a7f9f;
+  color: #d4d4d4;
 }
 
 .price {
-  font-family: "Fraunces", serif;
+  font-family: "Oswald", sans-serif;
   font-size: 1.05rem;
-  color: #1d3f74;
+  color: #c8102e;
 }
 
 .admin-grid {
@@ -472,7 +510,7 @@
 }
 
 .panel {
-  border-top: 1px solid rgba(36, 68, 122, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
   padding-top: 1rem;
 }
 
@@ -489,29 +527,29 @@
 }
 
 .booking-feedback.error {
-  background: rgba(176, 67, 67, 0.1);
-  color: #8f2f2f;
-  border: 1px solid rgba(176, 67, 67, 0.28);
+  background: rgba(200, 16, 46, 0.16);
+  color: #ffd0d7;
+  border: 1px solid rgba(200, 16, 46, 0.45);
 }
 
 .booking-feedback.ok {
-  background: rgba(47, 125, 87, 0.12);
-  color: #1f5f40;
-  border: 1px solid rgba(47, 125, 87, 0.3);
+  background: rgba(47, 125, 87, 0.18);
+  color: #c8f0d8;
+  border: 1px solid rgba(47, 125, 87, 0.45);
 }
 
 .booking-hint {
   margin: 0 0 0.65rem;
-  color: #5a7196;
-  font-size: 0.86rem;
+  color: #e0e0e0;
+  font-size: 0.9rem;
 }
 
 .booking-gate {
   margin-top: 1.2rem;
   padding: 1.35rem 1.25rem;
-  border-radius: 14px;
-  background: rgba(29, 63, 116, 0.06);
-  border: 1px solid rgba(29, 63, 116, 0.14);
+  border-radius: 0;
+  background: rgba(200, 16, 46, 0.1);
+  border: 1px solid rgba(200, 16, 46, 0.28);
   display: grid;
   gap: 0.75rem;
   max-width: 520px;
@@ -519,14 +557,14 @@
 
 .booking-gate h3 {
   margin: 0;
-  font-family: "Fraunces", serif;
+  font-family: "Oswald", sans-serif;
   font-size: 1.35rem;
-  color: #12284f;
+  color: #ffffff;
 }
 
 .booking-gate p {
   margin: 0;
-  color: #4d6284;
+  color: #e4e4e4;
   line-height: 1.55;
 }
 
@@ -536,7 +574,7 @@
 }
 
 .booking-gate-login {
-  color: #1d3f74;
+  color: #c8102e;
   font-weight: 700;
   text-decoration: none;
   font-size: 0.92rem;

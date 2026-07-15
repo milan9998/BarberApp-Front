@@ -105,7 +105,7 @@ export class RegisterComponent {
         this.isSubmitting = false;
         this.registerSucceeded = true;
         this.feedbackIsError = false;
-        this.feedback = response?.message || this.i18n.t('auth.registerSuccess');
+        this.feedback = this.i18n.localizeMessage(response?.message, 'auth.registerSuccess');
       },
       error: (error: HttpErrorResponse) => {
         this.isSubmitting = false;
@@ -126,7 +126,7 @@ export class RegisterComponent {
 
   private extractError(error: HttpErrorResponse): string {
     if (error.status === 0) {
-      return 'API nije dostupan. Proverite da li backend radi.';
+      return this.i18n.t('auth.apiUnavailable');
     }
 
     if (error.status === 400 && error.error?.errors) {
@@ -135,18 +135,18 @@ export class RegisterComponent {
       for (const field of Object.keys(validationErrors)) {
         messages.push(...validationErrors[field]);
       }
-      return messages.join('\n') || 'Neispravni podaci.';
+      return messages.map((m) => this.i18n.localizeMessage(m)).join('\n') || this.i18n.t('auth.invalidData');
     }
 
     const detail = error.error?.detail || error.error?.title || error.error?.message;
     if (typeof detail === 'string' && detail.trim()) {
-      return detail;
+      return this.i18n.localizeMessage(detail, 'auth.registerFailed');
     }
 
     if (typeof error.error === 'string' && error.error.trim()) {
-      return error.error;
+      return this.i18n.localizeMessage(error.error, 'auth.registerFailed');
     }
 
-    return `Greška pri registraciji (${error.status || 'network'}).`;
+    return `${this.i18n.t('auth.registerFailed')} (${error.status || 'network'}).`;
   }
 }

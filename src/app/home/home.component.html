@@ -1,115 +1,161 @@
-<section class="home-root">
-  <section class="home-hero" *ngIf="activeCompany as shop" [style.backgroundImage]="'url(' + heroImage + ')'">
-    <div class="home-hero-veil"></div>
-    <div class="home-hero-copy" [attr.data-anim]="heroAnimKey">
-      <p class="home-brand rise rise-1">{{ 'brand.name' | t }}</p>
-      <p class="hero-shop-tag rise rise-2">{{ 'home.topShops' | t }} · {{ shop.tag }}</p>
-      <h1 class="rise rise-3">{{ shop.companyName }}</h1>
-      <p class="home-lead rise rise-4">{{ shop.description }}</p>
-      <p class="hero-location rise rise-5">{{ shop.location }}</p>
-      <div class="home-hero-actions rise rise-6">
-        <a class="premium-btn premium-btn-primary" [routerLink]="['/companies', shop.companyId]">
-          {{ 'home.viewShop' | t }}
-        </a>
-        <a class="hero-secondary" routerLink="/companies">{{ 'home.ctaPrimary' | t }}</a>
+<section class="bc-home">
+  <section class="bc-hero" [style.backgroundImage]="'url(' + heroImage + ')'">
+    <div class="bc-hero-veil"></div>
+    <div class="bc-hero-copy" [attr.data-anim]="heroAnimKey">
+      <p class="bc-brand">{{ 'brand.name' | t }}</p>
+      <h1>{{ 'home.title' | t }}</h1>
+      <p class="bc-lead">{{ 'home.subtitle' | t }}</p>
+      <div class="bc-actions">
+        <a class="bc-btn" routerLink="/companies">{{ 'home.bookNow' | t }}</a>
+        <a
+          *ngIf="activeCompany"
+          class="bc-link"
+          [routerLink]="['/companies', activeCompany.companyId]"
+        >{{ 'home.viewShop' | t }} — {{ activeCompany.companyName }}</a>
+        <a *ngIf="!activeCompany" class="bc-link" routerLink="/register">{{ 'home.ctaSecondary' | t }}</a>
       </div>
+    </div>
 
-      <div class="hero-tabs rise rise-7" *ngIf="featuredCompanies.length">
-        <button
-          type="button"
-          *ngFor="let company of featuredCompanies; let i = index"
-          [class.active]="i === activeCompanyIndex"
-          (click)="setCompany(i)"
-        >
-          <span class="tab-index">0{{ i + 1 }}</span>
-          <span class="tab-name">{{ company.companyName }}</span>
-          <span class="tab-loc">{{ company.location }}</span>
-        </button>
+    <div class="bc-hero-shops" *ngIf="featuredCompanies.length">
+      <button
+        type="button"
+        class="bc-hero-shop"
+        *ngFor="let company of featuredCompanies; let i = index"
+        [class.active]="i === activeCompanyIndex"
+        (click)="setCompany(i)"
+      >
+        <img [src]="company.imageUrl[0]" [alt]="" />
+        <span>
+          <strong>{{ company.companyName }}</strong>
+          <em>{{ company.location }}</em>
+        </span>
+      </button>
+      <a
+        class="bc-hero-open"
+        *ngIf="activeCompany"
+        [routerLink]="['/companies', activeCompany.companyId]"
+      >{{ 'home.viewShop' | t }}</a>
+    </div>
+    <div class="bc-hero-bar" aria-hidden="true"></div>
+  </section>
+
+  <section class="bc-section bc-about">
+    <div class="bc-wrap bc-about-grid">
+      <div class="bc-about-title">
+        <span class="bc-watermark" aria-hidden="true">PLATFORM</span>
+        <div class="bc-red-line"></div>
+        <h2>{{ 'home.storyTitle' | t }}</h2>
+      </div>
+      <div class="bc-about-body">
+        <p>{{ 'home.storyP1' | t }}</p>
+        <p>{{ 'home.storyP2' | t }}</p>
+        <div class="bc-stats">
+          <article>
+            <h3>{{ 'home.metric1Label' | t }}</h3>
+            <p>{{ 'home.metric1' | t }}</p>
+          </article>
+          <article>
+            <h3>{{ 'home.metric2Label' | t }}</h3>
+            <p>{{ 'home.metric2' | t }}</p>
+          </article>
+        </div>
+        <a class="bc-btn" routerLink="/about">{{ 'home.learnMore' | t }}</a>
       </div>
     </div>
   </section>
 
-  <div class="home-body">
-    <section class="home-section home-platform reveal">
-      <h2>{{ 'home.title' | t }}</h2>
-      <p class="home-platform-lead">{{ 'home.subtitle' | t }}</p>
-    </section>
+  <section class="bc-section bc-services">
+    <div class="bc-wrap">
+      <div class="bc-section-head">
+        <span class="bc-watermark faint" aria-hidden="true">SERVICES</span>
+        <h2>{{ 'home.provideTitle' | t }}</h2>
+        <p>{{ 'home.provideIntro' | t }}</p>
+      </div>
+      <ul class="bc-service-list">
+        <li>
+          <div>
+            <h3>{{ 'home.svc1Title' | t }}</h3>
+            <p>{{ 'home.svc1Text' | t }}</p>
+          </div>
+          <a routerLink="/services">{{ 'home.learnMore' | t }}</a>
+        </li>
+        <li>
+          <div>
+            <h3>{{ 'home.svc2Title' | t }}</h3>
+            <p>{{ 'home.svc2Text' | t }}</p>
+          </div>
+          <a routerLink="/services">{{ 'home.learnMore' | t }}</a>
+        </li>
+        <li>
+          <div>
+            <h3>{{ 'home.svc3Title' | t }}</h3>
+            <p>{{ 'home.svc3Text' | t }}</p>
+          </div>
+          <a routerLink="/services">{{ 'home.learnMore' | t }}</a>
+        </li>
+        <li>
+          <div>
+            <h3>{{ 'home.svc4Title' | t }}</h3>
+            <p>{{ 'home.svc4Text' | t }}</p>
+          </div>
+          <a routerLink="/services">{{ 'home.learnMore' | t }}</a>
+        </li>
+      </ul>
+    </div>
+  </section>
 
-    <section class="home-section reveal">
-      <h2>{{ 'home.storyTitle' | t }}</h2>
-      <p>{{ 'home.storyP1' | t }}</p>
-      <p>{{ 'home.storyP2' | t }}</p>
-      <p>{{ 'home.storyP3' | t }}</p>
-    </section>
+  <section class="bc-section bc-team">
+    <div class="bc-wrap bc-team-grid">
+      <div>
+        <h2>{{ 'home.teamTitle' | t }}</h2>
+        <p>{{ 'home.teamText' | t }}</p>
+        <a class="bc-btn" routerLink="/companies">{{ 'home.bookNow' | t }}</a>
+      </div>
+      <div class="bc-team-metrics">
+        <article>
+          <strong>{{ 'home.metric3Label' | t }}</strong>
+          <span>{{ 'home.metric3' | t }}</span>
+        </article>
+        <article>
+          <strong>{{ 'home.metric4Label' | t }}</strong>
+          <span>{{ 'home.metric4' | t }}</span>
+        </article>
+      </div>
+    </div>
+  </section>
 
-    <section class="home-metrics reveal">
-      <article>
-        <strong>20+</strong>
-        <span>{{ 'home.metric1' | t }}</span>
-      </article>
-      <article>
-        <strong>20</strong>
-        <span>{{ 'home.metric2' | t }}</span>
-      </article>
-      <article>
-        <strong>80</strong>
-        <span>{{ 'home.metric3' | t }}</span>
-      </article>
-      <article>
-        <strong>EN/SR</strong>
-        <span>{{ 'home.metric4' | t }}</span>
-      </article>
-    </section>
-
-    <section class="home-section reveal">
-      <div class="section-head">
+  <section class="bc-section bc-featured" *ngIf="featuredCompanies.length">
+    <div class="bc-wrap">
+      <div class="bc-section-head">
         <h2>{{ 'home.featuredTitle' | t }}</h2>
         <p>{{ 'home.featuredText' | t }}</p>
       </div>
-      <div class="featured-strip" *ngIf="featuredCompanies.length">
+      <div class="bc-featured-grid">
         <a
-          class="featured-item rise-card"
+          class="bc-featured-card"
           *ngFor="let company of featuredCompanies; let i = index"
           [routerLink]="['/companies', company.companyId]"
-          [style.animationDelay]="(i * 0.12) + 's'"
           (mouseenter)="setCompany(i)"
         >
           <img [src]="company.imageUrl[0]" [alt]="company.companyName" loading="lazy" />
-          <div>
+          <div class="bc-featured-copy">
+            <span>{{ company.tag }}</span>
             <strong>{{ company.companyName }}</strong>
-            <span>{{ company.location }}</span>
+            <em>{{ company.location }}</em>
+            <span class="bc-featured-cta">{{ 'home.viewShop' | t }}</span>
           </div>
         </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="home-split reveal">
-      <article>
-        <h2>{{ 'home.forClientsTitle' | t }}</h2>
-        <p>{{ 'home.forClientsText' | t }}</p>
-        <ul>
-          <li>{{ 'home.forClients1' | t }}</li>
-          <li>{{ 'home.forClients2' | t }}</li>
-          <li>{{ 'home.forClients3' | t }}</li>
-        </ul>
-        <a routerLink="/companies">{{ 'home.forClientsCta' | t }}</a>
-      </article>
-      <article>
-        <h2>{{ 'home.forOwnersTitle' | t }}</h2>
-        <p>{{ 'home.forOwnersText' | t }}</p>
-        <ul>
-          <li>{{ 'home.forOwners1' | t }}</li>
-          <li>{{ 'home.forOwners2' | t }}</li>
-          <li>{{ 'home.forOwners3' | t }}</li>
-        </ul>
-        <a routerLink="/services">{{ 'home.forOwnersCta' | t }}</a>
-      </article>
-    </section>
-
-    <section class="home-section reveal">
-      <h2>{{ 'home.howTitle' | t }}</h2>
-      <p>{{ 'home.howIntro' | t }}</p>
-      <div class="home-steps">
+  <section class="bc-section bc-how">
+    <div class="bc-wrap">
+      <div class="bc-section-head">
+        <h2>{{ 'home.howTitle' | t }}</h2>
+        <p>{{ 'home.howIntro' | t }}</p>
+      </div>
+      <div class="bc-steps">
         <article>
           <span>01</span>
           <h3>{{ 'home.step1Title' | t }}</h3>
@@ -131,38 +177,32 @@
           <p>{{ 'home.step4Text' | t }}</p>
         </article>
       </div>
-      <a class="inline-link" routerLink="/how-it-works">{{ 'home.howCta' | t }}</a>
-    </section>
+      <a class="bc-link light" routerLink="/how-it-works">{{ 'home.howCta' | t }}</a>
+    </div>
+  </section>
 
-    <section class="home-section dense reveal">
-      <h2>{{ 'home.depthTitle' | t }}</h2>
-      <p>{{ 'home.depthP1' | t }}</p>
-      <p>{{ 'home.depthP2' | t }}</p>
-      <p>{{ 'home.depthP3' | t }}</p>
-    </section>
-
-    <section class="home-links reveal">
-      <a routerLink="/about">
-        <strong>{{ 'nav.about' | t }}</strong>
-        <span>{{ 'home.linkAbout' | t }}</span>
-      </a>
-      <a routerLink="/how-it-works">
-        <strong>{{ 'nav.how' | t }}</strong>
-        <span>{{ 'home.linkHow' | t }}</span>
-      </a>
-      <a routerLink="/services">
-        <strong>{{ 'nav.services' | t }}</strong>
-        <span>{{ 'home.linkServices' | t }}</span>
-      </a>
-    </section>
-
-    <section class="home-final reveal">
+  <section class="bc-section bc-final">
+    <div class="bc-wrap">
       <h2>{{ 'home.finalTitle' | t }}</h2>
       <p>{{ 'home.finalText' | t }}</p>
-      <div class="home-hero-actions">
-        <a class="premium-btn premium-btn-primary" routerLink="/companies">{{ 'home.ctaPrimary' | t }}</a>
-        <a class="hero-secondary dark" routerLink="/register">{{ 'home.ctaSecondary' | t }}</a>
+      <div class="bc-actions">
+        <a class="bc-btn" routerLink="/companies">{{ 'home.ctaPrimary' | t }}</a>
+        <a class="bc-link light" routerLink="/register">{{ 'home.ctaSecondary' | t }}</a>
       </div>
-    </section>
-  </div>
+      <div class="bc-links">
+        <a routerLink="/about">
+          <strong>{{ 'nav.about' | t }}</strong>
+          <span>{{ 'home.linkAbout' | t }}</span>
+        </a>
+        <a routerLink="/how-it-works">
+          <strong>{{ 'nav.how' | t }}</strong>
+          <span>{{ 'home.linkHow' | t }}</span>
+        </a>
+        <a routerLink="/services">
+          <strong>{{ 'nav.services' | t }}</strong>
+          <span>{{ 'home.linkServices' | t }}</span>
+        </a>
+      </div>
+    </div>
+  </section>
 </section>

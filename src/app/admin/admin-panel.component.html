@@ -1,0 +1,47 @@
+<section class="admin-page">
+  <header class="admin-hero">
+    <p class="admin-kicker">{{ 'admin.kicker' | t }}</p>
+    <h1>{{ 'admin.title' | t }}</h1>
+    <p>{{ 'admin.subtitle' | t }}</p>
+    <div class="admin-actions">
+      <button type="button" class="premium-btn premium-btn-primary" (click)="loadAllBarbers()" [disabled]="isLoading || !shops.length">
+        {{ 'admin.expandAll' | t }}
+      </button>
+      <a class="admin-link" routerLink="/create-company">{{ 'companies.create' | t }}</a>
+    </div>
+  </header>
+
+  <p class="admin-status" *ngIf="isLoading">{{ 'admin.loading' | t }}</p>
+  <p class="admin-status" *ngIf="!isLoading && loadError">{{ 'admin.loadFailed' | t }}</p>
+  <p class="admin-status" *ngIf="!isLoading && !loadError && !shops.length">{{ 'admin.empty' | t }}</p>
+
+  <div class="admin-list" *ngIf="shops.length">
+    <article class="admin-shop" *ngFor="let shop of shops">
+      <button type="button" class="admin-shop-head" (click)="toggleShop(shop)">
+        <div>
+          <span>{{ shop.tag }}</span>
+          <strong>{{ shop.companyName }}</strong>
+          <em>{{ shop.location }}</em>
+        </div>
+        <div class="admin-shop-meta">
+          <span>{{ shop.expanded ? ('admin.hideTeam' | t) : ('admin.showTeam' | t) }}</span>
+          <a [routerLink]="['/companies', shop.companyId]" (click)="$event.stopPropagation()">{{ 'admin.openShop' | t }}</a>
+        </div>
+      </button>
+
+      <div class="admin-team" *ngIf="shop.expanded">
+        <p *ngIf="shop.loadingBarbers">{{ 'admin.loadingTeam' | t }}</p>
+        <p *ngIf="!shop.loadingBarbers && !shop.barbers.length">{{ 'admin.noBarbers' | t }}</p>
+        <ul *ngIf="!shop.loadingBarbers && shop.barbers.length">
+          <li *ngFor="let barber of shop.barbers">
+            <strong>{{ barber.barberName }}</strong>
+            <span>{{ barber.email }}</span>
+            <span>{{ barber.phoneNumber }}</span>
+            <span>{{ barber.hours }}</span>
+          </li>
+        </ul>
+        <a class="admin-link" [routerLink]="['/create-company-owner', shop.companyId]">{{ 'admin.assignOwner' | t }}</a>
+      </div>
+    </article>
+  </div>
+</section>
