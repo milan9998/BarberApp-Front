@@ -349,6 +349,16 @@
   border-left-color: #c8102e;
 }
 
+.staff-hint {
+  margin: 0.35rem 0 0.5rem;
+  padding: 0.65rem 0.75rem;
+  color: #c9c9c9;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  border-left: 2px solid rgba(200, 16, 46, 0.55);
+  background: rgba(255, 255, 255, 0.03);
+}
+
 .app-content {
   min-width: 0;
 }

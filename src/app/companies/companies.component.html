@@ -18,7 +18,18 @@
   </div>
 
   <div *ngIf="isLoggedIn && isAdmin" class="market-admin">
-    <a class="premium-btn premium-btn-primary" routerLink="/create-company">+ {{ 'companies.create' | t }}</a>
+    <a class="premium-btn premium-btn-primary" routerLink="/admin">{{ 'nav.admin' | t }}</a>
+    <a class="premium-btn secondary-btn" routerLink="/create-company">+ {{ 'companies.create' | t }}</a>
+  </div>
+
+  <div *ngIf="isLoggedIn && isOwner && ownerCompanyId" class="market-owner-desk">
+    <p class="market-owner-kicker">{{ 'sidebar.owner' | t }}</p>
+    <div class="market-owner-actions">
+      <a class="premium-btn premium-btn-primary" [routerLink]="['/owner/crm', ownerCompanyId]">{{ 'nav.crm' | t }}</a>
+      <a class="premium-btn secondary-btn" [routerLink]="['/companies', ownerCompanyId]">{{ 'sidebar.myShop' | t }}</a>
+      <a class="premium-btn secondary-btn" [routerLink]="['/create-barber', ownerCompanyId]">{{ 'company.addBarber' | t }}</a>
+      <a class="premium-btn secondary-btn" [routerLink]="['/create-haircut', ownerCompanyId]">{{ 'company.addService' | t }}</a>
+    </div>
   </div>
 
   <div class="market-grid" *ngIf="!isLoading && !loadError && companies.length > 0">

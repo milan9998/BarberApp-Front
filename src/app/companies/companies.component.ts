@@ -21,10 +21,12 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   isAdmin = false;
   isOwner = false;
+  ownerCompanyId: string | null = null;
   isLoading = true;
   loadError = false;
   private hoverTimers = new Map<string, ReturnType<typeof setInterval>>();
   private langSub?: Subscription;
+  private authSub?: Subscription;
 
   constructor(
     private barberService: BarberService,
@@ -33,11 +35,13 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.authService.isLoggedin$.subscribe((status) => {
-      this.isLoggedIn = status;
+    this.refreshAuthFlags();
+    this.authSub = this.authService.isLoggedin$.subscribe(() => {
+      this.refreshAuthFlags();
+      if (this.rawCompanies.length) {
+        this.applyProfiles();
+      }
     });
-    this.isAdmin = this.authService.isAdmin();
-    this.isOwner = this.authService.isOwner();
 
     this.langSub = this.i18n.language$.subscribe(() => {
       if (this.rawCompanies.length) {
@@ -66,11 +70,19 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     this.hoverTimers.forEach((timer) => clearInterval(timer));
     this.hoverTimers.clear();
     this.langSub?.unsubscribe();
+    this.authSub?.unsubscribe();
+  }
+
+  private refreshAuthFlags(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.isAdmin = this.authService.isAdmin();
+    this.isOwner = this.authService.isOwner();
+    this.ownerCompanyId = this.authService.getOwnerCompanyId();
   }
 
   private applyProfiles(): void {
     const lang = this.i18n.language;
-    this.companies = (this.rawCompanies || []).map((company) => {
+    const mapped = (this.rawCompanies || []).map((company) => {
       const profile = getShopProfile(company.companyName, lang);
       return {
         ...company,
@@ -87,9 +99,17 @@ export class CompaniesComponent implements OnInit, OnDestroy {
       };
     });
 
-    // Owners still see the full marketplace on mobile/desktop.
-    // Filtering to one shop made the list look "broken".
+    // Owners keep marketplace access, but their own shop is pinned first.
+    if (this.isOwner && this.ownerCompanyId) {
+      const mine = mapped.filter((c) => String(c.companyId) === String(this.ownerCompanyId));
+      const rest = mapped.filter((c) => String(c.companyId) !== String(this.ownerCompanyId));
+      this.filteredCompaniesByOwnerId = mine;
+      this.companies = [...mine, ...rest];
+      return;
+    }
+
     this.filteredCompaniesByOwnerId = [];
+    this.companies = mapped;
   }
 
   checkOwner(): string {

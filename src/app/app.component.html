@@ -97,6 +97,7 @@
 
     <ng-container *ngIf="showStaffPanel">
       <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.admin' | t }}</a>
+      <a *ngIf="isAdmin" routerLink="/create-company" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'companies.create' | t }}</a>
       <a
         *ngIf="isOwner && ownerCompanyId"
         [routerLink]="['/owner/crm', ownerCompanyId]"
@@ -121,6 +122,7 @@
         routerLinkActive="active"
         (click)="closeMobileMenu()"
       >{{ 'company.addService' | t }}</a>
+      <p *ngIf="isOwner && !ownerCompanyId" class="staff-hint">{{ 'sidebar.reloginHint' | t }}</p>
     </ng-container>
 
     <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active" (click)="closeMobileMenu()">{{ 'nav.login' | t }}</a>
@@ -139,26 +141,29 @@
       <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="active">{{ 'nav.admin' | t }}</a>
       <a *ngIf="isAdmin" routerLink="/create-company" routerLinkActive="active">{{ 'companies.create' | t }}</a>
 
-      <a
-        *ngIf="isOwner && ownerCompanyId"
-        [routerLink]="['/owner/crm', ownerCompanyId]"
-        routerLinkActive="active"
-      >{{ 'nav.crm' | t }}</a>
-      <a
-        *ngIf="isOwner && ownerCompanyId"
-        [routerLink]="['/companies', ownerCompanyId]"
-        routerLinkActive="active"
-      >{{ 'sidebar.myShop' | t }}</a>
-      <a
-        *ngIf="isOwner && ownerCompanyId"
-        [routerLink]="['/create-barber', ownerCompanyId]"
-        routerLinkActive="active"
-      >{{ 'company.addBarber' | t }}</a>
-      <a
-        *ngIf="isOwner && ownerCompanyId"
-        [routerLink]="['/create-haircut', ownerCompanyId]"
-        routerLinkActive="active"
-      >{{ 'company.addService' | t }}</a>
+      <ng-container *ngIf="isOwner">
+        <a
+          *ngIf="ownerCompanyId"
+          [routerLink]="['/owner/crm', ownerCompanyId]"
+          routerLinkActive="active"
+        >{{ 'nav.crm' | t }}</a>
+        <a
+          *ngIf="ownerCompanyId"
+          [routerLink]="['/companies', ownerCompanyId]"
+          routerLinkActive="active"
+        >{{ 'sidebar.myShop' | t }}</a>
+        <a
+          *ngIf="ownerCompanyId"
+          [routerLink]="['/create-barber', ownerCompanyId]"
+          routerLinkActive="active"
+        >{{ 'company.addBarber' | t }}</a>
+        <a
+          *ngIf="ownerCompanyId"
+          [routerLink]="['/create-haircut', ownerCompanyId]"
+          routerLinkActive="active"
+        >{{ 'company.addService' | t }}</a>
+        <p *ngIf="!ownerCompanyId" class="staff-hint">{{ 'sidebar.reloginHint' | t }}</p>
+      </ng-container>
 
       <a *ngIf="isBarber" routerLink="/companies" routerLinkActive="active">{{ 'sidebar.schedule' | t }}</a>
       <a routerLink="/companies" routerLinkActive="active">{{ 'nav.companies' | t }}</a>

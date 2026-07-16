@@ -20,6 +20,7 @@ export interface BarberProfileEnrichment {
   experience: string;
 }
 
+/** One unique image per shop slot — never reused across shops. */
 const SHOP_GALLERY = [
   'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=1600&q=80',
@@ -41,8 +42,24 @@ const SHOP_GALLERY = [
   'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1559599101-f09722fb4948?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=1600&q=80',
-  'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1600&q=80'
+  // Extra slots for unknown / fallback shops only (never overlap named shops above)
+  'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=1600&q=80'
 ] as const;
+
+const NAMED_SHOP_COUNT = 20;
 
 const SHOP_HERO_INDEX: Record<string, number> = {
   'Truefitt & Hill': 0,
@@ -114,17 +131,19 @@ function seedFrom(text: string): number {
 }
 
 function pickGallery(seed: number, shopName?: string): string[] {
-  const hero =
-    shopName && shopName in SHOP_HERO_INDEX
-      ? SHOP_HERO_INDEX[shopName]
-      : seed % SHOP_GALLERY.length;
-  const len = SHOP_GALLERY.length;
-  return [
-    SHOP_GALLERY[hero % len],
-    SHOP_GALLERY[(hero + 5) % len],
-    SHOP_GALLERY[(hero + 11) % len],
-    SHOP_GALLERY[(hero + 17) % len]
-  ];
+  // Each named shop owns exactly one exclusive image index (0..19).
+  // Unknown shops use leftover indices only (20+) so they never collide with named shops.
+  if (shopName && shopName in SHOP_HERO_INDEX) {
+    const index = SHOP_HERO_INDEX[shopName];
+    return [SHOP_GALLERY[index]];
+  }
+
+  const fallbackPool = SHOP_GALLERY.slice(NAMED_SHOP_COUNT);
+  if (fallbackPool.length) {
+    return [fallbackPool[seed % fallbackPool.length]];
+  }
+
+  return [`https://picsum.photos/seed/shop-${seed}/1600/1067`];
 }
 
 function profile(

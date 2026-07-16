@@ -30,17 +30,23 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.isLoggedin$.subscribe((status) => {
-      this.isLoggedIn = status;
-      this.isAdmin = this.authService.isAdmin();
-      this.isOwner = this.authService.isOwner();
-      this.isBarber = this.authService.isBarber();
-      this.ownerCompanyId = this.authService.getOwnerCompanyId();
+    this.refreshStaffState();
+    this.authService.isLoggedin$.subscribe(() => {
+      this.refreshStaffState();
     });
 
     this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
+      this.refreshStaffState();
       this.closeMobileMenu();
     });
+  }
+
+  private refreshStaffState(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.isAdmin = this.authService.isAdmin();
+    this.isOwner = this.authService.isOwner();
+    this.isBarber = this.authService.isBarber();
+    this.ownerCompanyId = this.authService.getOwnerCompanyId();
   }
 
   get showStaffPanel(): boolean {

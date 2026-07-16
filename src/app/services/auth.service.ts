@@ -21,13 +21,26 @@ export class AuthService {
     login(formData: FormData): Observable<any> {
         return this.http.post<any>(`${this.authUrl}/login`, formData).pipe(
             tap(response => {
-                if (response && response.role) {
-                    localStorage.setItem(this.roleKey, response.role);
-                    this.loggedIn.next(true)
+                if (!response) {
+                    return;
                 }
+                const role = response.role ?? response.Role;
+                if (!role) {
+                    return;
+                }
+                localStorage.setItem(this.roleKey, role);
+                // Persist company id BEFORE emitting logged-in so sidebar sees owner links immediately.
+                const companyId =
+                    response.companyIds?.[0] ??
+                    response.CompanyIds?.[0] ??
+                    response.companyId ??
+                    response.CompanyId;
+                if (companyId) {
+                    this.setOwnerCompanyId(String(companyId));
+                }
+                this.loggedIn.next(true);
             })
         );
-        
     }
     createCompanyOwner(formData: FormData):Observable<any>{
         return this.http.post<any>(`${this.authUrl}/createCompanyOwner`, formData)
@@ -67,8 +80,11 @@ export class AuthService {
         return this.getRole() === 'Barber';
     }
 
-    setOwnerCompanyId(role: any) {
-        localStorage.setItem(this.owner_company_id, role);
+    setOwnerCompanyId(companyId: any) {
+        if (companyId == null || companyId === '') {
+            return;
+        }
+        localStorage.setItem(this.owner_company_id, String(companyId));
     }
     getOwnerCompanyId(): string | null {
        return localStorage.getItem(this.owner_company_id);

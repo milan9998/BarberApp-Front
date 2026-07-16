@@ -59,16 +59,20 @@ export class LoginComponent implements OnInit {
     this.authService.login(formData).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        if (response?.companyIds?.length) {
-          this.authService.setOwnerCompanyId(response.companyIds[0]);
-        } else if (response?.companyId) {
-          this.authService.setOwnerCompanyId(response.companyId);
+        const role = response?.role ?? response?.Role;
+        const ownerCompany =
+          response?.companyIds?.[0] ??
+          response?.CompanyIds?.[0] ??
+          response?.companyId ??
+          response?.CompanyId ??
+          this.authService.getOwnerCompanyId();
+        if (ownerCompany) {
+          this.authService.setOwnerCompanyId(String(ownerCompany));
         }
-        const ownerCompany = response?.companyIds?.[0] || response?.companyId;
         this.router.navigate(
-          response?.role === 'Admin'
+          role === 'Admin'
             ? ['/admin']
-            : response?.role === 'CompanyOwner' && ownerCompany
+            : role === 'CompanyOwner' && ownerCompany
               ? ['/owner/crm', ownerCompany]
               : ['/home']
         );
